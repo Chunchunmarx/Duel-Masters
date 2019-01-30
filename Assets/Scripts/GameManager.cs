@@ -11,6 +11,28 @@ public class GameManager : MonoBehaviour
     private int mFireManaTapped = 0;
     public List<GameObject> mZoneList = null;
     public static GameManager instance = null;
+    private bool mCanHover = true;
+    private bool mIsTargeting = false;
+
+    public void SetIsTargeting(bool _isTargeting)
+    {
+        mIsTargeting = _isTargeting;
+    }
+
+    public bool IsTargeting()
+    {
+        return mIsTargeting;
+    }
+
+    public void SetCanHover(bool _canHover)
+    {
+        mCanHover = _canHover;
+    }
+
+    public bool CanHover()
+    {
+        return mCanHover;
+    }
 
     public bool CanSummon(CARD_CIVILIZATION _cardCivilization, int _manaRequired)
     {
@@ -140,7 +162,15 @@ public class GameManager : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update ()
-    {     
-        
+    {
+        ClickHandle();
+    }
+
+    private void ClickHandle()
+    {
+        if(Input.GetMouseButtonDown(0) == true && mIsTargeting == true)
+        {
+
+        }
     }
 }

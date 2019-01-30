@@ -7,9 +7,8 @@ enum CARD_STATE
     HAND,
     BATTLEZONE,
     AIR,
-    MANAZONE
-        
-
+    MANAZONE,
+    TARGETING
 };
 
 public enum CARD_CIVILIZATION
@@ -19,27 +18,29 @@ public enum CARD_CIVILIZATION
     FIRE,
     LIGHT,
     WATER
-    
 };
 
 public class Card : MonoBehaviour
 {
-    private CARD_CIVILIZATION mCardCivilization = CARD_CIVILIZATION.NATURE;
+    public CARD_CIVILIZATION mCardCivilization = CARD_CIVILIZATION.NATURE;
     private CARD_STATE mCardState;
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
     private BattlezoneManager mBattlezoneManager;
     private HandManager mHandManager;
     private ManazoneManager mManazoneManager;
-    private int mManaRequired = 1;
+    public int mManaRequired = 1;
     bool mHasEnteredBattlezone = false; 
     bool mHasEnteredManazone = false;
     bool mIsTapped = false;
+
+    private LineRenderer mLineRenderer;
     
     
     void Start ()
     {
-        mCardState = CARD_STATE.HAND;
+        mLineRenderer = GetComponent<LineRenderer>();
+        ChangeCardState(CARD_STATE.HAND);
         mOrigPosition = transform.position;
         mOrigRotation = transform.rotation;
     }
@@ -48,6 +49,7 @@ public class Card : MonoBehaviour
 	void Update ()
     {
         HandleAir();
+        TargetingLine();
 	}
 
     void HandleAir()
@@ -70,15 +72,34 @@ public class Card : MonoBehaviour
                 OnMouseDownHand();
                 break;
             case CARD_STATE.MANAZONE:
-                OnMouseDownTap();
+                OnMouseDownManazone();
                 break;
-            
+            case CARD_STATE.BATTLEZONE:
+                OnMouseDownBattlezone();
+                break;
+            case CARD_STATE.TARGETING:
+                ChangeCardState(CARD_STATE.BATTLEZONE);
+                break;
+
             default:
 
                 break;
         }
     }
-    void OnMouseDownTap()
+
+    void OnMouseDownBattlezone()
+    {
+        if(mCardState != CARD_STATE.TARGETING)
+        {
+            ChangeCardState(CARD_STATE.TARGETING);
+        }
+        else
+        {
+            ChangeCardState(CARD_STATE.BATTLEZONE);
+        }
+    }
+
+    void OnMouseDownManazone()
     {
         if (mIsTapped == false)
         {
@@ -114,27 +135,26 @@ public class Card : MonoBehaviour
 
         if (mHasEnteredBattlezone == true)
         {
-            mCardState = CARD_STATE.BATTLEZONE;
+            ChangeCardState(CARD_STATE.BATTLEZONE);
             mBattlezoneManager.AddCard(this);
             return;
         }
 
         if (mHasEnteredManazone == true)
         {
-           
-            mCardState = CARD_STATE.MANAZONE;
+            ChangeCardState(CARD_STATE.MANAZONE);
             mManazoneManager.AddCard(this);
             return;
         }
-
-        mCardState = CARD_STATE.HAND;
+        
+        ChangeCardState(CARD_STATE.HAND);
         transform.rotation = mOrigRotation;
         transform.position = mOrigPosition;
     }
 
     void OnMouseDownHand()
     {
-        mCardState = CARD_STATE.AIR;
+        ChangeCardState(CARD_STATE.AIR);
         GameManager.instance.CardOnAir(true);
         transform.rotation = Quaternion.identity;
         transform.eulerAngles = new Vector3(0, 180, 0);
@@ -175,5 +195,41 @@ public class Card : MonoBehaviour
     public void SetHandManager(HandManager _handManager)
     {
         mHandManager = _handManager;
+    }
+
+    private void TargetingLine()
+    {
+        if(mLineRenderer.enabled == true)
+        {
+            Vector3 mousePoz = Input.mousePosition;
+            mousePoz.z = 8;
+            Vector3 newPosition = Camera.main.ScreenToWorldPoint(mousePoz);
+
+            mLineRenderer.SetPosition(0, transform.position);
+            mLineRenderer.SetPosition(1, new Vector3(newPosition.x, newPosition.y > 1 ? newPosition.y : 1, newPosition.z));
+        }
+    }
+
+    private void ChangeCardState(CARD_STATE _cardState)
+    {
+        mCardState = _cardState;
+
+        if(mCardState == CARD_STATE.TARGETING || mCardState == CARD_STATE.AIR)
+        {
+            GameManager.instance.SetCanHover(false);
+        }
+        else
+        {
+            GameManager.instance.SetCanHover(true);
+        }
+
+        if (mCardState == CARD_STATE.TARGETING)
+        {
+            mLineRenderer.enabled = true;
+        }
+        else
+        {
+            mLineRenderer.enabled = false;
+        }
     }
 }
