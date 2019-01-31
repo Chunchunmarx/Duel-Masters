@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     private bool mCanHover = true;
     private bool mIsTargeting = false;
+    private Transform mHoveredCard = null;
 
     public void SetIsTargeting(bool _isTargeting)
     {
@@ -171,6 +172,34 @@ public class GameManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0) == true && mIsTargeting == true)
         {
 
+        }
+    }
+
+    public void HoverEnter(Transform _hoveredCard)
+    {
+        if(mHoveredCard != null)
+        {
+            Destroy(mHoveredCard.gameObject);
+        }
+
+        Vector3 cameraScale = Camera.main.gameObject.transform.lossyScale;
+        Vector3 cameraAngles = Camera.main.gameObject.transform.eulerAngles;
+        Vector3 cameraPosition = Camera.main.gameObject.transform.localPosition;
+        Vector3 position = new Vector3(- 2.15f, 0.35f, 3.5f);//valori harcodate, naspa!
+        position = Camera.main.gameObject.transform.TransformPoint(position);
+        Quaternion rotation = new Quaternion();
+        rotation.eulerAngles = new Vector3(cameraAngles.x + 90f, cameraAngles.y, cameraAngles.z - 180);
+        mHoveredCard = Instantiate(_hoveredCard, position, rotation);
+        mHoveredCard.transform.localScale = new Vector3(cameraScale.x * 0.22f, cameraScale.y * 0.22f, cameraScale.z * 0.3f);
+
+        Destroy(mHoveredCard.GetComponent<Card>());
+    }
+
+    public void HoverExit()
+    {
+        if (mHoveredCard != null)
+        {
+            Destroy(mHoveredCard.gameObject);
         }
     }
 }

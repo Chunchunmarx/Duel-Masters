@@ -232,4 +232,14 @@ public class Card : MonoBehaviour
             mLineRenderer.enabled = false;
         }
     }
+
+    void OnMouseEnter()
+    {
+        GameManager.instance.HoverEnter(transform);
+    }
+
+    void OnMouseExit()
+    {
+        GameManager.instance.HoverExit();
+    }
 }
