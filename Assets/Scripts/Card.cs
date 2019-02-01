@@ -22,29 +22,50 @@ public enum CARD_CIVILIZATION
 
 public class Card : MonoBehaviour
 {
-    public CARD_CIVILIZATION mCardCivilization = CARD_CIVILIZATION.NATURE;
+    public CARD_CIVILIZATION mCardCivilization;
     private CARD_STATE mCardState;
+    private PLAYER_ID mOwner;
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
+
     private BattlezoneManager mBattlezoneManager;
     private HandManager mHandManager;
     private ManazoneManager mManazoneManager;
-    public int mManaRequired = 1;
+
+    public int mPower;
+    public int mManaRequired;
+    private int mID;
     bool mHasEnteredBattlezone = false; 
     bool mHasEnteredManazone = false;
     bool mIsTapped = false;
 
     private LineRenderer mLineRenderer;
-    
-    
-    void Start ()
+
+    //spamez carti pe bord sa testez atacul
+    public void TestSetBattlezone()//functie pusa doar pt test, de sters
     {
+        mCardState = CARD_STATE.BATTLEZONE;
+    }
+
+    public void TestSetOwner()
+    {
+        mOwner = PLAYER_ID.TWO;
+    }
+    
+    public PLAYER_ID GetOwner()
+    {
+        return mOwner;
+    }
+    
+    void Awake ()
+    {
+        mID = GameManager.instance.GetID();
         mLineRenderer = GetComponent<LineRenderer>();
         ChangeCardState(CARD_STATE.HAND);
         mOrigPosition = transform.position;
         mOrigRotation = transform.rotation;
-    }
-	
+        mOwner = PLAYER_ID.ONE;
+    }	
 	
 	void Update ()
     {
@@ -59,14 +80,13 @@ public class Card : MonoBehaviour
             Vector3 mousePoz = Input.mousePosition;
             mousePoz.z = 8;
             Vector3 newPosition = Camera.main.ScreenToWorldPoint(mousePoz);
-            transform.position = new Vector3(newPosition.x, newPosition.y > 1? newPosition.y : 1, newPosition.z);
+            transform.position = new Vector3(newPosition.x, newPosition.y > .1f? newPosition.y : .1f, newPosition.z);
         }
     }
 
     void OnMouseDown()
     {
-        Debug.Log(mCardState);
-        switch(mCardState)
+        switch (mCardState)
         {
             case CARD_STATE.HAND:
                 OnMouseDownHand();
@@ -77,30 +97,36 @@ public class Card : MonoBehaviour
             case CARD_STATE.BATTLEZONE:
                 OnMouseDownBattlezone();
                 break;
-            case CARD_STATE.TARGETING:
-                ChangeCardState(CARD_STATE.BATTLEZONE);
-                break;
-
             default:
-
                 break;
         }
     }
 
     void OnMouseDownBattlezone()
     {
-        if(mCardState != CARD_STATE.TARGETING)
+        if (GameManager.instance.IsTargeting() == false)
         {
+            if(GameManager.instance.GetActivePlayer() != mOwner)
+            {
+                return;
+            }
+
+            GameManager.instance.SetTargeting(transform);
             ChangeCardState(CARD_STATE.TARGETING);
         }
         else
         {
-            ChangeCardState(CARD_STATE.BATTLEZONE);
+            GameManager.instance.SetTargeted(transform);
         }
     }
 
     void OnMouseDownManazone()
     {
+        if(GameManager.instance.GetActivePlayer() != mOwner)
+        {
+            return;
+        }
+
         if (mIsTapped == false)
         {
             GameManager.instance.ManaTap(mCardCivilization);
@@ -154,6 +180,11 @@ public class Card : MonoBehaviour
 
     void OnMouseDownHand()
     {
+        if (GameManager.instance.GetActivePlayer() != mOwner)
+        {
+            return;
+
+        }
         ChangeCardState(CARD_STATE.AIR);
         GameManager.instance.CardOnAir(true);
         transform.rotation = Quaternion.identity;
@@ -206,7 +237,7 @@ public class Card : MonoBehaviour
             Vector3 newPosition = Camera.main.ScreenToWorldPoint(mousePoz);
 
             mLineRenderer.SetPosition(0, transform.position);
-            mLineRenderer.SetPosition(1, new Vector3(newPosition.x, newPosition.y > 1 ? newPosition.y : 1, newPosition.z));
+            mLineRenderer.SetPosition(1, new Vector3(newPosition.x, newPosition.y > .1f ? newPosition.y : .1f, newPosition.z));
         }
     }
 
@@ -233,13 +264,28 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void StopTargeting()
+    {
+        ChangeCardState(CARD_STATE.BATTLEZONE);
+    }
+
     void OnMouseEnter()
     {
+        if(mCardState == CARD_STATE.MANAZONE)
+        {
+            return;
+        }
+
         GameManager.instance.HoverEnter(transform);
     }
 
     void OnMouseExit()
     {
         GameManager.instance.HoverExit();
+    }
+
+    public int GetID()
+    {
+        return mID;
     }
 }

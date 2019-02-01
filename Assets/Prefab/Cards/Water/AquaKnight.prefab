@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1142753928941806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3560638, y: 1.8406029, z: -8.863282}
+  m_LocalPosition: {x: -0.99726486, y: 0.2094064, z: 1.0290906}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mCardCivilization: 4
+  mPower: 4000
   mManaRequired: 5
 --- !u!120 &120894231018843488
 LineRenderer:

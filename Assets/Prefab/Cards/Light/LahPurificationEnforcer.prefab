@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mCardCivilization: 3
+  mPower: 5500
   mManaRequired: 5
 --- !u!120 &120930859445230764
 LineRenderer:
