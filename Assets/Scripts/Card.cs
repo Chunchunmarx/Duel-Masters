@@ -22,7 +22,7 @@ public enum CARD_CIVILIZATION
 
 public class Card : MonoBehaviour
 {
-    public CARD_CIVILIZATION mCardCivilization;
+    private CARD_CIVILIZATION mCardCivilization;
     private CARD_STATE mCardState;
     private PLAYER_ID mOwner;
     private Vector3 mOrigPosition;
@@ -287,5 +287,15 @@ public class Card : MonoBehaviour
     public int GetID()
     {
         return mID;
+    }
+
+    public CARD_CIVILIZATION GetCardCivilization()
+    {
+        return mCardCivilization;
+    }
+
+    public int GetManaRequired()
+    {
+        return mManaRequired;
     }
 }
