@@ -28,11 +28,16 @@ public class GameManager : MonoBehaviour
     private Card mTargetingCard = null;
     private Card mTargetedCard = null;
     private int mNextID = 0;
-    public ManazoneManager mManazone_One;
-    public ManazoneManager mManazone_Two;
+    public Deck mDeck_One;
+    public HandManager mHand_One;
+    public ManazoneManager mManazone_One = null;
+    public ManazoneManager mManazone_Two = null;
+    private ManazoneManager mActveManazone = null;
     private int mTurnCount = 0;
     private GAME_STATE mGameState;
     private PLAYER_ID mActivePlayer = PLAYER_ID.ONE;
+
+    
 
     public void SetTargeting(Transform _targetingCard)
     {
@@ -65,9 +70,15 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        mActivePlayer = mActivePlayer == PLAYER_ID.ONE ? PLAYER_ID.TWO : PLAYER_ID.ONE;
         mUITransform.position = new Vector3(mUITransform.position.x, mUITransform.position.y, mUITransform.position.z * -1);
         mUITransform.eulerAngles = new Vector3(mUITransform.eulerAngles.x, mUITransform.eulerAngles.y + 180, mUITransform.eulerAngles.z);
+
+        mActivePlayer = mActivePlayer == PLAYER_ID.ONE ? PLAYER_ID.TWO : PLAYER_ID.ONE;
+        if(mActivePlayer == PLAYER_ID.ONE)
+        {
+            mHand_One.Draw();
+        }
+
     }
 
     public void SetCanHover( bool _canHover)
@@ -123,8 +134,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     void Awake()
     {
+        ++mTurnCount;
+        mGameState = GAME_STATE.MANA_PHASE;
+        mActivePlayer = PLAYER_ID.ONE;
+        mActveManazone = mManazone_One;
+
+        mHand_One.SetDeck(mDeck_One);
+
         if (instance == null)
         {
             instance = this;
@@ -133,18 +152,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        CardOnAir(false);
     }
-
-   
-
 
     void Start ()
     {
-        ++mTurnCount;
-        mGameState = GAME_STATE.MANA_PHASE;
-	}
+        CardOnAir(false);
+    }
 	
 	void Update ()
     {
@@ -220,5 +233,10 @@ public class GameManager : MonoBehaviour
     public PLAYER_ID GetActivePlayer()
     {
         return mActivePlayer;
+    }
+
+    public ManazoneManager GetActiveManazone()
+    {
+        return mActveManazone;
     }
 }

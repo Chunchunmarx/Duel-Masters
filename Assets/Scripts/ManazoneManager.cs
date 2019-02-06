@@ -50,7 +50,7 @@ public class ManazoneManager : MonoBehaviour
                 return false;
                 break;
         }
-        if (_manaRequired == mLightManaTapped + mFireManaTapped + mNatureManaTapped + mDarknessManaTapped + mWaterManaTapped)
+        if (_card.GetManaRequired() == mLightManaTapped + mFireManaTapped + mNatureManaTapped + mDarknessManaTapped + mWaterManaTapped)
         {
             return true;
         }
@@ -110,8 +110,9 @@ public class ManazoneManager : MonoBehaviour
         }
     }
 
-    void Start () {
-		
+    void Start ()
+    {
+
 	}
 	
 	

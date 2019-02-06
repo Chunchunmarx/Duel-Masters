@@ -4,6 +4,8 @@ using UnityEngine;
 
 enum CARD_STATE
 {
+    INVALID,
+    DECK,
     HAND,
     BATTLEZONE,
     AIR,
@@ -22,8 +24,8 @@ public enum CARD_CIVILIZATION
 
 public class Card : MonoBehaviour
 {
-    private CARD_CIVILIZATION mCardCivilization;
-    private CARD_STATE mCardState;
+    public CARD_CIVILIZATION mCardCivilization;
+    private CARD_STATE mCardState = CARD_STATE.INVALID;
     private PLAYER_ID mOwner;
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
@@ -59,13 +61,16 @@ public class Card : MonoBehaviour
     
     void Awake ()
     {
-        mID = GameManager.instance.GetID();
         mLineRenderer = GetComponent<LineRenderer>();
-        ChangeCardState(CARD_STATE.HAND);
-        mOrigPosition = transform.position;
-        mOrigRotation = transform.rotation;
+        mID = GameManager.instance.GetID();
+        
+        ChangeCardState(CARD_STATE.DECK);
         mOwner = PLAYER_ID.ONE;
     }	
+
+    void Start ()
+    {
+    }
 	
 	void Update ()
     {
@@ -127,16 +132,17 @@ public class Card : MonoBehaviour
             return;
         }
 
+        ManazoneManager activeManazone = GameManager.instance.GetActiveManazone();
         if (mIsTapped == false)
         {
-            GameManager.instance.ManaTap(mCardCivilization);
+            activeManazone.ManaTap(mCardCivilization);
                 
             mIsTapped = true;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y - 90, transform.eulerAngles.z);
         }
         else
         {
-            GameManager.instance.ManaUntap(mCardCivilization);
+            activeManazone.ManaUntap(mCardCivilization);
             mIsTapped = false;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 90, transform.eulerAngles.z);
         }
@@ -174,8 +180,6 @@ public class Card : MonoBehaviour
         }
         
         ChangeCardState(CARD_STATE.HAND);
-        transform.rotation = mOrigRotation;
-        transform.position = mOrigPosition;
     }
 
     void OnMouseDownHand()
@@ -194,7 +198,7 @@ public class Card : MonoBehaviour
     {
         if (_collider.gameObject.GetComponent<BattlezoneManager>() != null)
         {
-            bool canSummon = GameManager.instance.CanSummon(mCardCivilization, mManaRequired);
+            bool canSummon = GameManager.instance.GetActiveManazone().CanSummon(this);
 
            
             if (canSummon == true)
@@ -243,6 +247,17 @@ public class Card : MonoBehaviour
 
     private void ChangeCardState(CARD_STATE _cardState)
     {
+        if (_cardState == mCardState)
+        {
+            Debug.LogWarning("Se schimba stateul cartii intr-o stare in care suntem deja!!!");
+            return;
+        }
+
+        if (mCardState == CARD_STATE.AIR && _cardState != CARD_STATE.HAND)
+        {
+            mHandManager.RemoveCardFromHand(this);
+        }
+
         mCardState = _cardState;
 
         if(mCardState == CARD_STATE.TARGETING || mCardState == CARD_STATE.AIR)
@@ -261,6 +276,12 @@ public class Card : MonoBehaviour
         else
         {
             mLineRenderer.enabled = false;
+        }
+
+        if (mCardState == CARD_STATE.HAND)
+        {
+            transform.rotation = mOrigRotation;
+            transform.position = mOrigPosition;
         }
     }
 
@@ -297,5 +318,20 @@ public class Card : MonoBehaviour
     public int GetManaRequired()
     {
         return mManaRequired;
+    }
+
+    public void SetOrgigPosition(Vector3 _origPosition)
+    {
+        mOrigPosition = _origPosition;
+    }
+
+    public void SetOrigRotation(Quaternion _origRotation)
+    {
+        mOrigRotation = _origRotation;
+    }
+
+    public void SetInHand()
+    {
+        ChangeCardState(CARD_STATE.HAND);
     }
 }

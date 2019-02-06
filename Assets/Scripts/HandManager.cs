@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
-    public List<Card> mCardList;
-    public Transform mCardPrefab;
-    public Vector3 mOrigPosition;
+    private List<Card> mCardList;
+    private Transform mCardPrefab;
+    private Deck mDeck;
 	// Use this for initialization
+
+    void Awake()
+    {
+        mCardList = new List<Card>();
+    }
 
 	void Start ()
     {
@@ -16,23 +21,54 @@ public class HandManager : MonoBehaviour
 
     private void InstantiateHand(int _handSize)
     {
-        Transform prefab;
-        mOrigPosition = transform.localPosition;
         for (int i = _handSize - 1; i >= 0; --i)
+        {
+            Draw();
+        }
+    }
+
+    public void Draw()
+    {
+        mCardList.Add(mDeck.Draw());
+        mCardList[mCardList.Count - 1].SetHandManager(this);
+        mCardList[mCardList.Count - 1].SetInHand();
+
+        RepositionCards();
+    }
+
+    private void RepositionCards()
+    {
+        int handSize = mCardList.Count;
+        for (int i = handSize - 1; i >= 0; --i)
         {
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
             rotation.eulerAngles = new Vector3(transform.eulerAngles.x + 1, transform.eulerAngles.y, transform.eulerAngles.z);
-            //transform.localPosition = new Vector3(0, i/100, mOrigPosition.z + 10 - 20/(_handSize - 1)*i);
-            position = transform.TransformPoint(new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 10 + 27f/(_handSize) * i));
-            prefab = Instantiate(CardCollection.instance.GetRandomCard(), position, rotation);
-            prefab.localScale = transform.lossyScale;
-            prefab.GetComponent<Card>().SetHandManager(this);
+            position = transform.TransformPoint(new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 10 + 27f / (handSize) * i));
+
+            mCardList[i].transform.position = position;
+            mCardList[i].transform.rotation = rotation;
+            mCardList[i].transform.localScale = transform.lossyScale;
+
+            mCardList[i].SetOrgigPosition(position);
+            mCardList[i].SetOrigRotation(rotation);
         }
     }
+
+    public void RemoveCardFromHand(Card _card)
+    {
+        mCardList.Remove(_card);
+        RepositionCards();
+    }
 	
+    public void SetDeck(Deck _deck)
+    {
+        mDeck = _deck;
+    }
+
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
 }
