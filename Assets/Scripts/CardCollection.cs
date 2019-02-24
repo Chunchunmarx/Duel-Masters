@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardCollection : MonoBehaviour
 {
     public List<Card> mCardList;
+    public Material mCardBack;
     public static CardCollection instance = null;
 
     void Awake()
