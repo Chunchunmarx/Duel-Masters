@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64256374035128658}
   - component: {fileID: 54627975941675174}
   - component: {fileID: 120522473063153410}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DarkClown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4123143795593030}
   - component: {fileID: 23171428976194390}
   - component: {fileID: 33970317877423256}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4538521145178100}
   - component: {fileID: 23617792737645944}
   - component: {fileID: 33922890202240172}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64882670755810074}
   - component: {fileID: 54887425416004030}
   - component: {fileID: 120178433972446826}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NightMasterShadowofDecay
   m_TagString: Untagged
   m_Icon: {fileID: 0}

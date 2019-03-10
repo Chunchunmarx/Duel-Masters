@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64446490922979290}
   - component: {fileID: 54241784079791082}
   - component: {fileID: 120724978479704296}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SwampWorm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4423892134914884}
   - component: {fileID: 23638277722079848}
   - component: {fileID: 33999065446259004}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

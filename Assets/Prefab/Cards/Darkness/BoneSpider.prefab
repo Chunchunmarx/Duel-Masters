@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4256867649197208}
   - component: {fileID: 23172127488686742}
   - component: {fileID: 33777290671942380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64059662123624748}
   - component: {fileID: 54350203870766878}
   - component: {fileID: 120213753417101782}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BoneSpider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

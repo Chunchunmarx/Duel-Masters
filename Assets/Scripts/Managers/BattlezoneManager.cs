@@ -6,14 +6,14 @@ public class BattlezoneManager : MonoBehaviour
 {
     public List<Card> mCardList;
     public List<Transform> mInitCardList;
-    private float mNextCardPoz = -3;
+    private float mNextCardPoz = -2;
 
     public void AddCard(Card _card)
     {
         mCardList.Add(_card);
-        _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z);
-        mNextCardPoz += 2;
-        _card.transform.localScale = new Vector3(0.15f, 0.15f, 0.2f);
+        _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z + 0.1f);
+        mNextCardPoz += 1.5f;
+        _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
     }
 
     

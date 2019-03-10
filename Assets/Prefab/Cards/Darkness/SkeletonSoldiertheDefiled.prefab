@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64726691520405404}
   - component: {fileID: 54227940007376736}
   - component: {fileID: 120427828349890524}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SkeletonSoldiertheDefiled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4567609495047356}
   - component: {fileID: 23418229809691348}
   - component: {fileID: 33024592750125068}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -84,10 +84,24 @@ public class Card : MonoBehaviour
     {
         if(mCardState == CARD_STATE.AIR)
         {
+            /*
+            Debug.Log(Input.mousePosition + " " + Screen.width + " " + Screen.height);
+            float middleWidth = Screen.width / 2;
+            float middleHeight = Screen.height / 2;
+
+            float translatedWidth = Input.mousePosition.x - middleWidth;
+            float translatedHeight = Input.mousePosition.y - middleHeight;
+
+            float newPosition_X = 8 * translatedWidth / 188;
+            //Debug.Log(translatedHeight)
+            float newPosition_Z = 5 * translatedHeight / 106;
+
+            transform.position = new Vector3(newPosition_X, 0.1f, newPosition_Z);
+            */
             Vector3 mousePoz = Input.mousePosition;
             mousePoz.z = 8;
             Vector3 newPosition = Camera.main.ScreenToWorldPoint(mousePoz);
-            transform.position = new Vector3(newPosition.x, newPosition.y > .1f? newPosition.y : .1f, newPosition.z);
+            transform.position = new Vector3(newPosition.x, newPosition.y > .1f ? newPosition.y : .1f, newPosition.z);
         }
     }
 

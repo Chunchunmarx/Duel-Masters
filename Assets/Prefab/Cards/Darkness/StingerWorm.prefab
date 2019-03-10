@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4152302665637956}
   - component: {fileID: 23703177685033072}
   - component: {fileID: 33807407289406288}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64316526696863802}
   - component: {fileID: 54826937992832286}
   - component: {fileID: 120252207161657470}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: StingerWorm
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4823272559544952}
   - component: {fileID: 23838548764914832}
   - component: {fileID: 33389571500831404}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

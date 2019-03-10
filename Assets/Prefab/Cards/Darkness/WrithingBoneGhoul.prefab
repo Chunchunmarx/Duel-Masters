@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4707692133836102}
   - component: {fileID: 23254379563256186}
   - component: {fileID: 33939429893221420}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64578225381657602}
   - component: {fileID: 54498929593434438}
   - component: {fileID: 120301553144826358}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WrithingBoneGhoul
   m_TagString: Untagged
   m_Icon: {fileID: 0}

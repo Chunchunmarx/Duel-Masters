@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64599626747951378}
   - component: {fileID: 54896035019376710}
   - component: {fileID: 120205354311917490}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DarkRavenShadowofGrief
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4109829155641546}
   - component: {fileID: 23920087849910628}
   - component: {fileID: 33747971731635616}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
