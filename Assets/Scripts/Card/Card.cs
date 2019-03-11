@@ -29,6 +29,7 @@ public class Card : MonoBehaviour
     private PLAYER_ID mPlayerOwner;
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
+    private float mUntappedEulerAngleY;
 
     private BattlezoneManager mBattlezoneManager;
     private HandManager mHandManager;
@@ -168,14 +169,14 @@ public class Card : MonoBehaviour
     {
         GameManager.instance.CardOnAir(false);
 
-        if (mHasEnteredBattlezone == true)
+        if (mHasEnteredBattlezone == true && mBattlezoneManager.CanSummon(GetComponent<Card>())==true)
         {
             ChangeCardState(CARD_STATE.BATTLEZONE);
             mBattlezoneManager.AddCard(this);
             return;
         }
 
-        if (mHasEnteredManazone == true)
+        if (mHasEnteredManazone == true && mManazoneManager.CanPlayMana(GetComponent<Card>())==true)
         {
             ChangeCardState(CARD_STATE.MANAZONE);
             mManazoneManager.AddCard(this);
@@ -201,14 +202,10 @@ public class Card : MonoBehaviour
     {
         if (_collider.gameObject.GetComponent<BattlezoneManager>() != null)
         {
-            bool canSummon = GameManager.instance.GetActiveManazone().CanSummon(this);
-
            
-            if (canSummon == true)
-            {
                 mHasEnteredBattlezone = true;
                 mBattlezoneManager = _collider.gameObject.GetComponent<BattlezoneManager>();
-            }
+            
         }
         if (_collider.gameObject.GetComponent<ManazoneManager>() != null)
         {

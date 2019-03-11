@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ManazoneManager : MonoBehaviour
 {
+    
     public List<Card> mCardList;
     private float mNextCardPoz = -2;
     //private PLAYER_ID mOwner;
@@ -12,7 +13,17 @@ public class ManazoneManager : MonoBehaviour
     private int mWaterManaTapped = 0;
     private int mDarknessManaTapped = 0;
     private int mFireManaTapped = 0;
-
+    
+    public bool CanPlayMana(Card _card)
+    {
+        if (GameManager.instance.GetGamePhase() == GAME_PHASE.MANA_PHASE)
+        {
+            GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
+            
+            return true;
+        }
+        return false;
+    }
     public void AddCard(Card _card)
     {
         mCardList.Add(_card);
@@ -110,6 +121,7 @@ public class ManazoneManager : MonoBehaviour
                 break;
         }
     }
+  
 
     void Start ()
     {
