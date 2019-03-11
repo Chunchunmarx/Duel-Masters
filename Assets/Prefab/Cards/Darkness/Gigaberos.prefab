@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64715831994554256}
   - component: {fileID: 54037073269114886}
   - component: {fileID: 120794291961665622}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Gigaberos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4501671085604888}
   - component: {fileID: 23295514383139882}
   - component: {fileID: 33090117297967840}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

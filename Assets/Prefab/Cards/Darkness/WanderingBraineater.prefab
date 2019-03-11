@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4951663910982712}
   - component: {fileID: 23836808127935688}
   - component: {fileID: 33167522509406258}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64247280426209608}
   - component: {fileID: 54370182730784234}
   - component: {fileID: 120807446978024804}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: WanderingBraineater
   m_TagString: Untagged
   m_Icon: {fileID: 0}

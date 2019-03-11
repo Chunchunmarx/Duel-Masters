@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     private int mNextID = 0;
     public Deck mDeck_One;
     public HandManager mHand_One;
+    public ShieldzoneManager mShieldzone_One = null;
     public ManazoneManager mManazone_One = null;
     public ManazoneManager mManazone_Two = null;
     private ManazoneManager mActveManazone = null;
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
         mActveManazone = mManazone_One;
 
         mHand_One.SetDeck(mDeck_One);
+        mShieldzone_One.SetDeck(mDeck_One);
 
         if (instance == null)
         {

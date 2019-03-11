@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64655395394793772}
   - component: {fileID: 54712362660631390}
   - component: {fileID: 120142453392026684}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BlackFeatherShadowofRage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4266577360763102}
   - component: {fileID: 23198706543173060}
   - component: {fileID: 33309951069570588}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

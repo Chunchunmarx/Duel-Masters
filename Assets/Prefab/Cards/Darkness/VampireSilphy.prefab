@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 64675564513094068}
   - component: {fileID: 54519643422412650}
   - component: {fileID: 120529856209166696}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: VampireSilphy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4827895496055554}
   - component: {fileID: 23639981518368300}
   - component: {fileID: 33528308276057868}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

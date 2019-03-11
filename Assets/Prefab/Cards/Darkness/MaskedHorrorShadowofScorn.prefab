@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4062411356219890}
   - component: {fileID: 23377612679137462}
   - component: {fileID: 33939410230312424}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 64977848427110504}
   - component: {fileID: 54939036928570260}
   - component: {fileID: 120307150115287426}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MaskedHorrorShadowofScorn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
