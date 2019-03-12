@@ -32,6 +32,7 @@ public class HandManager : MonoBehaviour
         mCardList.Add(mDeck.Draw());
         mCardList[mCardList.Count - 1].SetHandManager(this);
         mCardList[mCardList.Count - 1].SetInHand();
+        mCardList[mCardList.Count - 1].SetUntappedEulerAngleY(transform.eulerAngles.y);
 
         RepositionCards();
     }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ManaState : CardState
 {
+    bool mIsTapped = false;
+    bool mIsTappedLocked = false;
+
     public ManaState(Card _card) : base(_card) { }
 	
     public override void OnClick()
@@ -13,21 +16,50 @@ public class ManaState : CardState
             return;
         }
 
-        ManazoneManager activeManazone = GameManager.instance.GetActiveManazone();
-        if (mCardReference.GetIsTapped() == false)
+        if (mIsTapped == false)
         {
-            activeManazone.ManaTap(mCardReference.GetCardCivilization());
-
-            mCardReference.SetIsTapped(true);
-            mCardReference.transform.eulerAngles = new Vector3(mCardReference.transform.eulerAngles.x, mCardReference.transform.eulerAngles.y - 90, mCardReference.transform.eulerAngles.z);
+            Tap();
         }
         else
         {
-            activeManazone.ManaUntap(mCardReference.GetCardCivilization());
-            mCardReference.SetIsTapped(false);
-            mCardReference.transform.eulerAngles = new Vector3(mCardReference.transform.eulerAngles.x, mCardReference.transform.eulerAngles.y + 90, mCardReference.transform.eulerAngles.z);
+            Untap();
         }
     }
 
-    
+    public void Tap()
+    {
+        if (mIsTapped == true)
+        {
+            //Handle this??
+            return;
+        }
+
+        mIsTapped = true;
+        ManazoneManager activeManazone = GameManager.instance.GetActiveManazone();
+        activeManazone.ManaTap(mCardReference.GetCardCivilization());
+
+        Vector3 oldRotation = mCardReference.transform.eulerAngles;
+        mCardReference.transform.eulerAngles = new Vector3(oldRotation.x, mCardReference.GetUntappedEulerAngleY() + 90, oldRotation.z);
+    }
+
+    public void Untap()
+    {
+        if (mIsTapped == false || mIsTappedLocked == true)
+        {
+            //Handle this??
+            return;
+        }
+
+        mIsTapped = false;
+        ManazoneManager activeManazone = GameManager.instance.GetActiveManazone();
+        activeManazone.ManaUntap(mCardReference.GetCardCivilization());
+
+        Vector3 oldRotation = mCardReference.transform.eulerAngles;
+        mCardReference.transform.eulerAngles = new Vector3(oldRotation.x, mCardReference.GetUntappedEulerAngleY(), oldRotation.z);
+    }
+
+    public override void NewTurn()
+    {
+        Untap();
+    }
 }
