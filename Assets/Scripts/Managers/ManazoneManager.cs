@@ -16,13 +16,13 @@ public class ManazoneManager : MonoBehaviour
     
     public bool CanPlayMana(Card _card)
     {
-        if (GameManager.instance.GetGamePhase() == GAME_PHASE.MANA_PHASE)
+        if (GameManager.instance.GetGamePhase() != GAME_PHASE.MANA_PHASE)
         {
-            GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
-            
-            return true;
+            return false;
         }
-        return false;
+
+        GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
+        return true;
     }
     public void AddCard(Card _card)
     {
@@ -31,6 +31,7 @@ public class ManazoneManager : MonoBehaviour
         mNextCardPoz += 1.5f;
         _card.transform.eulerAngles = new Vector3(_card.transform.eulerAngles.x, _card.transform.eulerAngles.y + 180, _card.transform.eulerAngles.z);
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
+        _card.SetUntappedEulerAngleY(_card.transform.eulerAngles.y);
     }
 
     public bool CanSummon(Card _card)
@@ -119,6 +120,14 @@ public class ManazoneManager : MonoBehaviour
             default:
                 Debug.LogWarning("GameManager::ManaTap() parametru invalid");
                 break;
+        }
+    }
+
+    public void NewTurn()
+    {
+        for (int i = 0; i < mCardList.Count; ++i)
+        {
+            mCardList[i].NewTurn();
         }
     }
   

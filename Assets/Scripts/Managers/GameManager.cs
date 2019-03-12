@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         if(mActivePlayer == PLAYER_ID.ONE)
         {
             mHand_One.Draw();
+            mActveManazone.NewTurn();
         }
         mGamePhase = GAME_PHASE.MANA_PHASE;
     }
@@ -250,6 +251,11 @@ public class GameManager : MonoBehaviour
     }
     public void SetGamePhase(GAME_PHASE _gamePhase)
     {
+        if(_gamePhase <= mGamePhase)
+        {
+            return;
+        }
+
         mGamePhase = _gamePhase;
     }
 }

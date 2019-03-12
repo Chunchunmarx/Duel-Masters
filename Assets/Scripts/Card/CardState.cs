@@ -17,4 +17,9 @@ public class CardState
     {
         Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
     }
+
+    public virtual void NewTurn()
+    {
+        //Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
+    }
 }

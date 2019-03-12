@@ -30,6 +30,7 @@ public class Card : MonoBehaviour
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
     private float mUntappedEulerAngleY;
+    private float mTappedEulerAngleY;
 
     private BattlezoneManager mBattlezoneManager;
     private HandManager mHandManager;
@@ -41,7 +42,6 @@ public class Card : MonoBehaviour
     private int mID;
     bool mHasEnteredBattlezone = false; 
     bool mHasEnteredManazone = false;
-    bool mIsTapped = false;
 
     private LineRenderer mLineRenderer;
 
@@ -71,6 +71,11 @@ public class Card : MonoBehaviour
         mCardStateR = new HandState(GetComponent<Card>());
     }	
 
+    public void NewTurn()
+    {
+        mCardStateR.NewTurn();
+    }
+
     void Start ()
     {
     }
@@ -85,6 +90,7 @@ public class Card : MonoBehaviour
     {
         if(mCardState == CARD_STATE.AIR)
         {
+            //idk what is this and I am lazy so it shall rule this kingdom.
             /*
             Debug.Log(Input.mousePosition + " " + Screen.width + " " + Screen.height);
             float middleWidth = Screen.width / 2;
@@ -111,93 +117,32 @@ public class Card : MonoBehaviour
         mCardStateR.OnClick();
     }
 
-    void OnMouseDownBattlezone()
+    void OnMouseUp()
     {
-        if (GameManager.instance.IsTargeting() == false)
-        {
-            if(GameManager.instance.GetActivePlayer() != mPlayerOwner)
-            {
-                return;
-            }
-
-            GameManager.instance.SetTargeting(transform);
-            ChangeCardState(CARD_STATE.TARGETING);
-        }
-        else
-        {
-            GameManager.instance.SetTargeted(transform);
-        }
-    }
-
-    void OnMouseDownManazone()
-    {
-        if(GameManager.instance.GetActivePlayer() != mPlayerOwner)
+        if(mCardState != CARD_STATE.AIR)
         {
             return;
         }
 
-        ManazoneManager activeManazone = GameManager.instance.GetActiveManazone();
-        if (mIsTapped == false)
-        {
-            activeManazone.ManaTap(mCardCivilization);
-                
-            mIsTapped = true;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y - 90, transform.eulerAngles.z);
-        }
-        else
-        {
-            activeManazone.ManaUntap(mCardCivilization);
-            mIsTapped = false;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 90, transform.eulerAngles.z);
-        }
-    }
-  
-    void OnMouseUp()
-    {
-        switch (mCardState)
-        {
-            case CARD_STATE.AIR:
-                OnMouseUpAir();
-                break;
-            default:
-
-                break;
-        }
-    }
-
-    void OnMouseUpAir()
-    {
         GameManager.instance.CardOnAir(false);
 
-        if (mHasEnteredBattlezone == true && mBattlezoneManager.CanSummon(GetComponent<Card>())==true)
+        if (mHasEnteredBattlezone == true && mBattlezoneManager.CanSummon(GetComponent<Card>()) == true)
         {
             ChangeCardState(CARD_STATE.BATTLEZONE);
             mBattlezoneManager.AddCard(this);
             return;
         }
 
-        if (mHasEnteredManazone == true && mManazoneManager.CanPlayMana(GetComponent<Card>())==true)
+        if (mHasEnteredManazone == true && mManazoneManager.CanPlayMana(GetComponent<Card>()) == true)
         {
             ChangeCardState(CARD_STATE.MANAZONE);
             mManazoneManager.AddCard(this);
             return;
         }
-        
+
         ChangeCardState(CARD_STATE.HAND);
     }
 
-    void OnMouseDownHand()
-    {
-        if (GameManager.instance.GetActivePlayer() != mPlayerOwner)
-        {
-            return;
-
-        }
-        ChangeCardState(CARD_STATE.AIR);
-        GameManager.instance.CardOnAir(true);
-        transform.rotation = Quaternion.identity;
-        transform.eulerAngles = new Vector3(0, 180, 0);
-    }
     void OnTriggerEnter(Collider _collider)
     {
         if (_collider.gameObject.GetComponent<BattlezoneManager>() != null)
@@ -343,12 +288,15 @@ public class Card : MonoBehaviour
     {
         ChangeCardState(CARD_STATE.HAND);
     }
-    public void SetIsTapped(bool _isTapped)
+
+    public void SetUntappedEulerAngleY(float _angle)
     {
-        mIsTapped = _isTapped;
+        mUntappedEulerAngleY = _angle;
+        mTappedEulerAngleY = mUntappedEulerAngleY + 90;
     }
-    public bool GetIsTapped()
+
+    public float GetUntappedEulerAngleY()
     {
-        return mIsTapped;
+        return mUntappedEulerAngleY;
     }
 }
