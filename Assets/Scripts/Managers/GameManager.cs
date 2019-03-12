@@ -8,17 +8,18 @@ public enum PLAYER_ID
     TWO = 2
 };
 
-public enum GAME_STATE
+public enum GAME_PHASE
 {
-    DRAW_PHASE = 0,
+    INVALID = 0,
     MANA_PHASE = 1,
     SUMMONING_PHASE = 2,
-    ATTACK_PHASE = 3
+    ATTACKING_PHASE = 3
+
 };
 
 public class GameManager : MonoBehaviour
 {
-  
+    public GAME_PHASE mGamePhase = GAME_PHASE.INVALID;
     public List<GameObject> mZoneList = null;
     public static GameManager instance = null;
     private bool mCanHover = true;
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
     public ManazoneManager mManazone_Two = null;
     private ManazoneManager mActveManazone = null;
     private int mTurnCount = 0;
-    private GAME_STATE mGameState;
+  
     private PLAYER_ID mActivePlayer = PLAYER_ID.ONE;
 
     
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             mHand_One.Draw();
         }
-
+        mGamePhase = GAME_PHASE.MANA_PHASE;
     }
 
     public void SetCanHover( bool _canHover)
@@ -98,6 +99,7 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
+        mGamePhase = GAME_PHASE.ATTACKING_PHASE;
 
         if(mTargetingCard.mPower == mTargetedCard.mPower)
         {
@@ -139,8 +141,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         ++mTurnCount;
-        mGameState = GAME_STATE.MANA_PHASE;
+       
         mActivePlayer = PLAYER_ID.ONE;
+        mGamePhase = GAME_PHASE.MANA_PHASE;
         mActveManazone = mManazone_One;
 
         mHand_One.SetDeck(mDeck_One);
@@ -240,5 +243,13 @@ public class GameManager : MonoBehaviour
     public ManazoneManager GetActiveManazone()
     {
         return mActveManazone;
+    }
+    public GAME_PHASE GetGamePhase()
+    {
+        return mGamePhase;
+    }
+    public void SetGamePhase(GAME_PHASE _gamePhase)
+    {
+        mGamePhase = _gamePhase;
     }
 }

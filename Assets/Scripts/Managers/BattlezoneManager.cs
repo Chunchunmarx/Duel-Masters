@@ -16,7 +16,27 @@ public class BattlezoneManager : MonoBehaviour
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
     }
 
-    
+    public bool CanSummon(Card _card)
+    {
+   
+
+        if (GameManager.instance.GetGamePhase() > GAME_PHASE.SUMMONING_PHASE)
+        {
+            
+
+            return false;
+        }
+       
+         bool CanSummon =  GameManager.instance.GetActiveManazone().CanSummon(_card);
+        if(CanSummon == false)
+        {
+            return false;
+        
+        }
+        GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
+        return true;
+        
+    }
 
     private void Init()
     {
