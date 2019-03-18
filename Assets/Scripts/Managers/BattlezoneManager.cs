@@ -17,7 +17,7 @@ public class BattlezoneManager : MonoBehaviour
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
     }
     
-
+    /*
     private void Init()
     {
         for (int i = 0; i < mInitCardList.Count; ++i)
@@ -27,11 +27,19 @@ public class BattlezoneManager : MonoBehaviour
             card.GetComponent<Card>().TestSetOwner();
             AddCard(card.GetComponent<Card>());
         }
+    }*/
+
+    public void NewTurn()
+    {
+        for (int i = 0; i < mCardList.Count; ++i)
+        {
+            mCardList[i].NewTurn();
+        }
     }
 
     void Start ()
     {
-        Init();
+        //Init();
 	}
 	
 	void Update ()

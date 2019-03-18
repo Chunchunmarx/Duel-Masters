@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour
     private bool mIsTargeting = false;
     private Transform mHoveredCard = null;
     public Transform mUITransform;
-    private Card mTargetingCard = null;
-    private Card mTargetedCard = null;
+    private BattleState mTargetingCard = null;
+    private BattleState mTargetedCard = null;
     private int mNextID = 0;
 
     public Deck mDeck_One;
@@ -38,9 +38,11 @@ public class GameManager : MonoBehaviour
 
     public HandManager mHand_One;
     public HandManager mHand_Two;
+    private HandManager mActiveHandManager = null;
     public ShieldzoneManager mShieldzone_One = null;
     public BattlezoneManager mBattlezone_One = null;
     public BattlezoneManager mBattlezone_Two = null;
+    private BattlezoneManager mActiveBattlezone = null;
     public ManazoneManager mManazone_One = null;
     public ManazoneManager mManazone_Two = null;
     private ManazoneManager mActveManazone = null;
@@ -51,12 +53,12 @@ public class GameManager : MonoBehaviour
 
     
 
-    public void SetTargeting(Card _targetingCard)
+    public void SetTargeting(BattleState _targetingCard)
     {
         mTargetingCard = _targetingCard;
     }
 
-    public void SetTargeted(Card _targetedCard)
+    public void SetTargeted(BattleState _targetedCard)
     {
         mTargetedCard = _targetedCard;
     }
@@ -94,16 +96,21 @@ public class GameManager : MonoBehaviour
         {
             mZoneList = mZoneList_P1;
             mActveManazone = mManazone_One;
+            mActiveBattlezone = mBattlezone_One;
+            mActiveHandManager = mHand_One;
             mHand_One.Draw();
         }
         else
         {
             mZoneList = mZoneList_P2;
             mActveManazone = mManazone_Two;
+            mActiveBattlezone = mBattlezone_Two;
+            mActiveHandManager = mHand_Two;
             mHand_Two.Draw();
         }
 
         mActveManazone.NewTurn();
+        mActiveBattlezone.NewTurn();
         mGamePhase = GAME_PHASE.MANA_PHASE;
     }
 
@@ -119,6 +126,11 @@ public class GameManager : MonoBehaviour
 
     private bool PreconditionCheck()
     {
+        if(mTargetingCard.CanAttack() == false || mTargetedCard.CanBeAttacked() == false)
+        {
+            return false;
+        }
+
         if (mTargetedCard.GetPlayerOwner() == mTargetingCard.GetPlayerOwner())
         {
             return false;
@@ -142,18 +154,21 @@ public class GameManager : MonoBehaviour
         mGamePhase = GAME_PHASE.ATTACKING_PHASE;
         BlockerPhase();
 
-        if(mTargetingCard.mPower == mTargetedCard.mPower)
+        int attackerPower = mTargetingCard.GetPower();
+        int attackedPower = mTargetedCard.GetPower();
+
+        if (attackerPower == attackedPower)
         {
-            Destroy(mTargetingCard.gameObject);
-            Destroy(mTargetedCard.gameObject);
+            Destroy(mTargetingCard.GetGameObject());
+            Destroy(mTargetedCard.GetGameObject());
         }
-        else if(mTargetingCard.mPower > mTargetedCard.mPower)
+        else if(attackerPower > attackedPower)
         {
-            Destroy(mTargetedCard.gameObject);
+            Destroy(mTargetedCard.GetGameObject());
         }
         else
         {
-            Destroy(mTargetingCard.gameObject);
+            Destroy(mTargetingCard.GetGameObject());
         }
     }
 
@@ -187,6 +202,7 @@ public class GameManager : MonoBehaviour
         mActivePlayer = PLAYER_ID.ONE;
         mGamePhase = GAME_PHASE.MANA_PHASE;
         mActveManazone = mManazone_One;
+        mActiveHandManager = mHand_One;
 
         mHand_One.SetDeck(mDeck_One);
         mHand_Two.SetDeck(mDeck_Two);
@@ -236,9 +252,10 @@ public class GameManager : MonoBehaviour
                 mTargetedCard = null;
             }
 
-            mTargetingCard.StopTargeting();
-            mTargetingCard = null;
+            mTargetingCard.SetIsTargeting(false);
+          
             mIsTargeting = false;
+            mTargetingCard = null;
 
             return;
         }
@@ -246,6 +263,7 @@ public class GameManager : MonoBehaviour
         if(mTargetingCard != null)
         {
             mIsTargeting = true;
+            mTargetingCard.SetIsTargeting(true);
         }
     }
 
@@ -309,5 +327,9 @@ public class GameManager : MonoBehaviour
         }
 
         mGamePhase = _gamePhase;
+    }
+    public bool GetIsTargeting()
+    {
+        return mIsTargeting;
     }
 }

@@ -11,13 +11,14 @@ public enum CARD_STATE
     AIR,
     MANAZONE,
     GRAVEYARD,
-    TARGETING
+    TARGETING,
+    NO_TARGETING
 };
 
-public class CardState  
+public class CardState
 {
     protected Card mCardReference;
-    protected CARD_STATE mCardState;
+    protected CARD_STATE mCardState = CARD_STATE.INVALID;
 
     private CardState() { }
 
@@ -25,11 +26,17 @@ public class CardState
     {
         mCardReference = _card; //it works?
         mCardState = CARD_STATE.INVALID;
+        mCardReference.SetIsInAir(false);
     }
 
     public virtual void OnClick()
     {
         Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
+    }
+
+    public virtual void OnMouseUp()
+    {
+        //Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
     }
 
     public virtual void NewTurn()
@@ -59,6 +66,16 @@ public class CardState
     }
 
     public void ToMana()
+    {
+
+    }
+
+    public CARD_STATE GetState()
+    {
+        return mCardState;
+    }
+
+    public virtual void LeaveState()
     {
 
     }

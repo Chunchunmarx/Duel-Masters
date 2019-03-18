@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum CARD_CIVILIZATION
 {
+    INVALID,
     NATURE,
     DARKNESS,
     FIRE,
@@ -13,31 +14,32 @@ public enum CARD_CIVILIZATION
 
 public class Card : MonoBehaviour
 {
-    public CARD_CIVILIZATION mCardCivilization;
-    private CARD_STATE mCardState = CARD_STATE.INVALID;
-    public PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
-    private Vector3 mOrigPosition;
-    private Quaternion mOrigRotation;
+    private CARD_CIVILIZATION mCardCivilization;
+    //private CARD_STATE mCardState.GetState()= CARD_STATE.INVALID;
+    private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
+    public Vector3 mOrigPosition;
+    public Quaternion mOrigRotation;
     private float mUntappedEulerAngleY;
     private float mTappedEulerAngleY;
 
     private BattlezoneManager mBattlezoneManager;
-    private HandManager mHandManager;
     //private ManazoneManager mManazoneManager;
-    private CardState mCardStateR;
+    private CardState mCardState;
 
-    public int mPower;
-    public int mManaRequired;
+    private int mPower;
+    private int mManaRequired;
     private int mID;
-    bool mHasEnteredBattlezone = false; 
-    bool mHasEnteredManazone = false;
+    private bool mHasEnteredBattlezone = false;
+    private bool mHasEnteredManazone = false;
+    private bool mIsInAir = false;
+   
 
     private LineRenderer mLineRenderer;
 
     //spamez carti pe bord sa testez atacul
     public void TestSetBattlezone()//functie pusa doar pt test, de sters
     {
-        ChangeCardState(CARD_STATE.BATTLEZONE);
+        //ChangeCardState(CARD_STATE.BATTLEZONE);
     }
 
     public void TestSetOwner()
@@ -53,26 +55,28 @@ public class Card : MonoBehaviour
     void Awake ()
     {
         mLineRenderer = GetComponent<LineRenderer>();
+        mLineRenderer.enabled = false;
+
         mID = GameManager.instance.GetID();
         
         //ChangeCardState(CARD_STATE.DECK);
-        mCardStateR = new HandState(GetComponent<Card>());
+        //SetCardState(new HandState(GetComponent<Card>()));
     }	
 
     public void NewTurn()
     {
         //mManazoneManager = GameManager.instance.GetActiveManazone();
-        mCardStateR.NewTurn();
+        mCardState.NewTurn();
     }
 
     public bool IsTapped()
     {
-        return mCardStateR.IsTapped();
+        return mCardState.IsTapped();
     }
 
     public void LockTap()
     {
-        mCardStateR.LockTap();
+        mCardState.LockTap();
     }
 
     void Start ()
@@ -84,11 +88,21 @@ public class Card : MonoBehaviour
     {
         HandleAir();
         TargetingLine();
-	}
+
+        if (GameManager.instance.GetIsTargeting() == true || mIsInAir == true)
+        {
+            GameManager.instance.SetCanHover(false);
+        }
+        else
+        {
+            GameManager.instance.SetCanHover(true);
+        }
+
+    }
 
     void HandleAir()
     {
-        if(mCardState == CARD_STATE.AIR)
+        if(mIsInAir == true)
         {
             //idk what is this and I am lazy so it shall rule this kingdom.
             /*
@@ -114,12 +128,12 @@ public class Card : MonoBehaviour
 
     void OnMouseDown()
     {
-        mCardStateR.OnClick();
+        mCardState.OnClick();
     }
 
     void OnMouseUp()
     {
-        if(mCardState != CARD_STATE.AIR)
+        if (mIsInAir == false)
         {
             return;
         }
@@ -128,19 +142,19 @@ public class Card : MonoBehaviour
 
         if (mHasEnteredBattlezone == true && GameManager.instance.CanSummon(GetComponent<Card>()) == true)
         {
-            ChangeCardState(CARD_STATE.BATTLEZONE);
+            SetCardState(new BattleState(GetComponent<Card>()));
             mBattlezoneManager.AddCard(this);
             return;
         }
 
         if (mHasEnteredManazone == true && GameManager.instance.CanPlayMana(GetComponent<Card>()) == true)
         {
-            ChangeCardState(CARD_STATE.MANAZONE);
+            SetCardState(new ManaState(GetComponent<Card>()));
             GameManager.instance.GetActiveManazone().AddCard(this);
             return;
         }
 
-        ChangeCardState(CARD_STATE.HAND);
+        mCardState.OnMouseUp();
     }
 
     void OnTriggerEnter(Collider _collider)
@@ -170,11 +184,6 @@ public class Card : MonoBehaviour
             mHasEnteredManazone = false;
         }
     }
-    
-    public void SetHandManager(HandManager _handManager)
-    {
-        mHandManager = _handManager;
-    }
 
     private void TargetingLine()
     {
@@ -188,64 +197,51 @@ public class Card : MonoBehaviour
             mLineRenderer.SetPosition(1, new Vector3(newPosition.x, newPosition.y > .1f ? newPosition.y : .1f, newPosition.z));
         }
     }
-
+    /*
     public void ChangeCardState(CARD_STATE _cardState)
     {
-        if (_cardState == mCardState)
+        //Debug.Log(_cardState + " " + mIsTargeting);
+        if(_cardState == CARD_STATE.HAND)
         {
-            Debug.LogWarning("Se schimba stateul cartii intr-o stare in care suntem deja!!!");
             return;
         }
 
-        if (mCardState == CARD_STATE.AIR && _cardState != CARD_STATE.HAND)
+        if (_cardState == mCardState.GetState())
         {
-            mHandManager.RemoveCardFromHand(this);
+            Debug.LogWarning("Se schimba stateul cartii intr-o stare in care suntem deja!!!");
+            //return;
         }
 
-        mCardState = _cardState;
+     
 
-        if (mCardState == CARD_STATE.TARGETING || mCardState == CARD_STATE.AIR)
+        if (mCardState.GetState()== CARD_STATE.AIR && _cardState != CARD_STATE.HAND)
         {
-            GameManager.instance.SetCanHover(false);
-        }
-        else
-        {
-            GameManager.instance.SetCanHover(true);
         }
 
-        if (mCardState == CARD_STATE.TARGETING)
-        {
-            mLineRenderer.enabled = true;
-        }
-        else
-        {
-            mLineRenderer.enabled = false;
-        }
+        //mCardState.GetState()= _cardState;
 
-        if (mCardState == CARD_STATE.HAND)
+
+        if (mCardState.GetState()== CARD_STATE.HAND)
         {
             transform.rotation = mOrigRotation;
             transform.position = mOrigPosition;
         }
 
-        if (mCardState == CARD_STATE.BATTLEZONE)
+        if (mCardState.GetState()== CARD_STATE.BATTLEZONE)
         {
-            mCardStateR = new BattleState(GetComponent<Card>());
+            SetCardState(new BattleState(GetComponent<Card>()));
         }
-        if (mCardState == CARD_STATE.MANAZONE)
+        if (mCardState.GetState()== CARD_STATE.MANAZONE)
         {
-            mCardStateR = new ManaState(GetComponent<Card>());
+            SetCardState(new ManaState(GetComponent<Card>()));
         }
-    }
+    }*/
 
-    public void StopTargeting()
-    {
-        ChangeCardState(CARD_STATE.BATTLEZONE);
-    }
+  
 
     void OnMouseEnter()
     {
-        if(mCardState == CARD_STATE.MANAZONE)
+        if(mCardState.GetState()== CARD_STATE.MANAZONE)
         {
             return;
         }
@@ -268,9 +264,19 @@ public class Card : MonoBehaviour
         return mCardCivilization;
     }
 
+    public void SetCardCivilization(CARD_CIVILIZATION _civilization)
+    {
+        mCardCivilization = _civilization;
+    }
+
     public int GetManaRequired()
     {
         return mManaRequired;
+    }
+
+    public void SetManaRequired(int _manaRequired)
+    {
+        mManaRequired = _manaRequired;
     }
 
     public void SetOrgigPosition(Vector3 _origPosition)
@@ -281,11 +287,6 @@ public class Card : MonoBehaviour
     public void SetOrigRotation(Quaternion _origRotation)
     {
         mOrigRotation = _origRotation;
-    }
-
-    public void SetInHand()
-    {
-        ChangeCardState(CARD_STATE.HAND);
     }
 
     public void SetUntappedEulerAngleY(float _angle)
@@ -317,5 +318,33 @@ public class Card : MonoBehaviour
     void AtTheBeginningOfTheTurn()
     {
 
+    }
+   public void TurnLineRenderer(bool _isOn)
+    {
+        mLineRenderer.enabled = _isOn;
+
+    }
+    public void SetCardState(CardState _state)
+    {
+        if (mCardState != null)
+        {
+            mCardState.LeaveState();
+        }
+        mCardState = _state;
+    }
+
+    public void SetIsInAir(bool _inAir)
+    {
+        mIsInAir = _inAir;
+    }
+
+    public void SetPower(int _power)
+    {
+        mPower = _power;
+    }
+
+    public int GetPower()
+    {
+        return mPower;
     }
 }

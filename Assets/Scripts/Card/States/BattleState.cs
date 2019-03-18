@@ -5,7 +5,44 @@ using UnityEngine;
 
 public class BattleState : CardState
 {
-    public BattleState(Card _card) : base(_card) { }
+    private bool mIsTapped = false;
+    private bool mHasSummoningSickness;
+    private bool mIsTargeting = false;
+
+    public BattleState(Card _card) : base(_card)
+    {
+        mHasSummoningSickness = true;
+        mCardState = CARD_STATE.BATTLEZONE;
+    }
+
+    public PLAYER_ID GetPlayerOwner()
+    {
+        return mCardReference.GetPlayerOwner();
+    }
+
+    public bool CanAttack()
+    {
+        if (mIsTapped == true)
+        {
+            return false;
+        }
+        if(mHasSummoningSickness == true)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool CanBeAttacked()
+    {/*
+        if (mIsTapped == true)
+        {
+            return false;
+        }
+        */
+        return true;
+    }
 
     public override void OnClick()
     {
@@ -16,14 +53,40 @@ public class BattleState : CardState
                 return;
             }
 
-            GameManager.instance.SetTargeting(mCardReference.GetComponent<Card>());
-            mCardReference.ChangeCardState(CARD_STATE.TARGETING);
+            if (mHasSummoningSickness == true)
+            {
+                return;
+            }
+
+            GameManager.instance.SetTargeting(this);
+            
         }
         else
         {
-            GameManager.instance.SetTargeted(mCardReference.GetComponent<Card>());
+            GameManager.instance.SetTargeted(this);
         }
     }
 
+    public override void NewTurn()
+    {
+        mIsTapped = false;
+        mHasSummoningSickness = false;
+    }
 
+    public int GetPower()
+    {
+        return mCardReference.GetPower();
+    }
+
+    public GameObject GetGameObject()
+    {
+        return mCardReference.gameObject;
+    }
+
+   
+    public void SetIsTargeting(bool _targeting)
+    {
+        mIsTargeting = _targeting;
+        mCardReference.TurnLineRenderer(mIsTargeting);
+    }
 }
