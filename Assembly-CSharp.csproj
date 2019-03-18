@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Abilities\AbilitiesCallback.cs" />
     <Compile Include="Assets\Scripts\Card\Card.cs" />
     <Compile Include="Assets\Scripts\Card\CardState.cs" />
     <Compile Include="Assets\Scripts\Card\States\BattleState.cs" />

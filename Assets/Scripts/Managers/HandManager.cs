@@ -7,7 +7,8 @@ public class HandManager : MonoBehaviour
     private List<Card> mCardList;
     private Transform mCardPrefab;
     private Deck mDeck;
-	// Use this for initialization
+    private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
+    // Use this for initialization
 
     void Awake()
     {
@@ -67,8 +68,13 @@ public class HandManager : MonoBehaviour
         mDeck = _deck;
     }
 
-	// Update is called once per frame
-	void Update ()
+    public void SetOwner(PLAYER_ID _owner)
+    {
+        mPlayerOwner = _owner;
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 		
 	}

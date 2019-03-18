@@ -7,6 +7,7 @@ public class BattlezoneManager : MonoBehaviour
     public List<Card> mCardList;
     public List<Transform> mInitCardList;
     private float mNextCardPoz = -2;
+    private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
 
     public void AddCard(Card _card)
     {
@@ -15,28 +16,7 @@ public class BattlezoneManager : MonoBehaviour
         mNextCardPoz += 1.5f;
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
     }
-
-    public bool CanSummon(Card _card)
-    {
-   
-
-        if (GameManager.instance.GetGamePhase() > GAME_PHASE.SUMMONING_PHASE)
-        {
-            
-
-            return false;
-        }
-       
-         bool CanSummon =  GameManager.instance.GetActiveManazone().CanSummon(_card);
-        if(CanSummon == false)
-        {
-            return false;
-        
-        }
-        GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
-        return true;
-        
-    }
+    
 
     private void Init()
     {
@@ -56,6 +36,11 @@ public class BattlezoneManager : MonoBehaviour
 	
 	void Update ()
     {
-		
-	}
+
+    }
+
+    public void SetOwner(PLAYER_ID _owner)
+    {
+        mPlayerOwner = _owner;
+    }
 }

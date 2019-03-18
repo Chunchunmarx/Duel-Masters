@@ -6,6 +6,7 @@ public class Deck : MonoBehaviour
 {
     public List<Card> mCardList;
     private List<Card> mDeck;
+    private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
 
     public Card Draw()
     {
@@ -28,10 +29,13 @@ public class Deck : MonoBehaviour
     }
 
     void Start ()
-    { 
-        for (int i = 1; i < 40; ++i)
+    {
+        Debug.Log(mPlayerOwner);
+        for (int i = 0; i < 40; ++i)
         {
             mDeck.Add(Instantiate(GetRandomCard(), transform.position, transform.rotation).GetComponent<Card>());
+            mDeck[i].SetOwner(mPlayerOwner);
+            mDeck[i].ChangeCardState(CARD_STATE.DECK);
         }
     }
 
@@ -39,8 +43,13 @@ public class Deck : MonoBehaviour
     {
         return mCardList[(int)Random.Range(0, mCardList.Count)].transform;
     }
-	
-	void Update ()
+
+    public void SetOwner(PLAYER_ID _owner)
+    {
+        mPlayerOwner = _owner;
+    }
+
+    void Update ()
     {
 		
 	}

@@ -16,12 +16,12 @@ public class BattleState : CardState
                 return;
             }
 
-            GameManager.instance.SetTargeting(mCardReference.transform);
+            GameManager.instance.SetTargeting(mCardReference.GetComponent<Card>());
             mCardReference.ChangeCardState(CARD_STATE.TARGETING);
         }
         else
         {
-            GameManager.instance.SetTargeted(mCardReference.transform);
+            GameManager.instance.SetTargeted(mCardReference.GetComponent<Card>());
         }
     }
 

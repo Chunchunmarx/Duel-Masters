@@ -2,15 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CARD_STATE
+{
+    INVALID,
+    DECK,
+    HAND,
+    BATTLEZONE,
+    AIR,
+    MANAZONE,
+    GRAVEYARD,
+    TARGETING
+};
+
 public class CardState  
 {
     protected Card mCardReference;
+    protected CARD_STATE mCardState;
 
     private CardState() { }
 
     public CardState(Card _card)
     {
-        mCardReference = _card;
+        mCardReference = _card; //it works?
+        mCardState = CARD_STATE.INVALID;
     }
 
     public virtual void OnClick()
@@ -21,5 +35,31 @@ public class CardState
     public virtual void NewTurn()
     {
         //Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
+    }
+
+    public virtual bool IsTapped()
+    {
+        //Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
+        return false;
+    }
+
+    public virtual void LockTap()
+    {
+        //Debug.LogWarning("Am apelat OnClick() din abstractie!!!");
+    }
+
+    public void ToGraveyard()
+    {
+
+    }
+
+    public void ToHand()
+    {
+
+    }
+
+    public void ToMana()
+    {
+
     }
 }
