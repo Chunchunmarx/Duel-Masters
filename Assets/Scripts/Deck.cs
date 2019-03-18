@@ -44,16 +44,15 @@ public class Deck : MonoBehaviour
     {
         Transform modelBody = GetRandomCard();
         CardFactory modelInfo = modelBody.GetComponent<CardFactory>();
-        Material modelMaterial = modelBody.GetComponent<MeshRenderer>().materials[0];
-
+        Material modelMaterial = modelBody.GetComponent<MeshRenderer>().sharedMaterials[0];
 
         Card newCard = Instantiate(mCardPrefab, transform.position, transform.rotation).GetComponent<Card>();
 
         newCard.SetCardCivilization(modelInfo.CardCivilization);
         newCard.SetPower(modelInfo.Power);
         newCard.SetManaRequired(modelInfo.ManaRequired);
-
-        newCard.GetComponent<MeshRenderer>().materials[0] = modelMaterial;
+        
+        newCard.GetComponent<MeshRenderer>().material = modelMaterial;
 
         return newCard;
     }
