@@ -2,17 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CARD_STATE
-{
-    INVALID,
-    DECK,
-    HAND,
-    BATTLEZONE,
-    AIR,
-    MANAZONE,
-    TARGETING
-};
-
 public enum CARD_CIVILIZATION
 {
     NATURE,
@@ -26,7 +15,7 @@ public class Card : MonoBehaviour
 {
     public CARD_CIVILIZATION mCardCivilization;
     private CARD_STATE mCardState = CARD_STATE.INVALID;
-    private PLAYER_ID mPlayerOwner;
+    public PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
     private Vector3 mOrigPosition;
     private Quaternion mOrigRotation;
     private float mUntappedEulerAngleY;
@@ -34,7 +23,7 @@ public class Card : MonoBehaviour
 
     private BattlezoneManager mBattlezoneManager;
     private HandManager mHandManager;
-    private ManazoneManager mManazoneManager;
+    //private ManazoneManager mManazoneManager;
     private CardState mCardStateR;
 
     public int mPower;
@@ -60,24 +49,35 @@ public class Card : MonoBehaviour
     {
         return mPlayerOwner;
     }
-    
+
     void Awake ()
     {
         mLineRenderer = GetComponent<LineRenderer>();
         mID = GameManager.instance.GetID();
         
-        ChangeCardState(CARD_STATE.DECK);
-        mPlayerOwner = PLAYER_ID.ONE;
+        //ChangeCardState(CARD_STATE.DECK);
         mCardStateR = new HandState(GetComponent<Card>());
     }	
 
     public void NewTurn()
     {
+        //mManazoneManager = GameManager.instance.GetActiveManazone();
         mCardStateR.NewTurn();
+    }
+
+    public bool IsTapped()
+    {
+        return mCardStateR.IsTapped();
+    }
+
+    public void LockTap()
+    {
+        mCardStateR.LockTap();
     }
 
     void Start ()
     {
+        //mManazoneManager = GameManager.instance.GetActiveManazone();
     }
 	
 	void Update ()
@@ -126,17 +126,17 @@ public class Card : MonoBehaviour
 
         GameManager.instance.CardOnAir(false);
 
-        if (mHasEnteredBattlezone == true && mBattlezoneManager.CanSummon(GetComponent<Card>()) == true)
+        if (mHasEnteredBattlezone == true && GameManager.instance.CanSummon(GetComponent<Card>()) == true)
         {
             ChangeCardState(CARD_STATE.BATTLEZONE);
             mBattlezoneManager.AddCard(this);
             return;
         }
 
-        if (mHasEnteredManazone == true && mManazoneManager.CanPlayMana(GetComponent<Card>()) == true)
+        if (mHasEnteredManazone == true && GameManager.instance.CanPlayMana(GetComponent<Card>()) == true)
         {
             ChangeCardState(CARD_STATE.MANAZONE);
-            mManazoneManager.AddCard(this);
+            GameManager.instance.GetActiveManazone().AddCard(this);
             return;
         }
 
@@ -155,7 +155,7 @@ public class Card : MonoBehaviour
         if (_collider.gameObject.GetComponent<ManazoneManager>() != null)
         {
             mHasEnteredManazone = true;
-            mManazoneManager = _collider.gameObject.GetComponent<ManazoneManager>();
+            //mManazoneManager = _collider.gameObject.GetComponent<ManazoneManager>();
         }
     }
 
@@ -171,7 +171,6 @@ public class Card : MonoBehaviour
         }
     }
     
-
     public void SetHandManager(HandManager _handManager)
     {
         mHandManager = _handManager;
@@ -298,5 +297,25 @@ public class Card : MonoBehaviour
     public float GetUntappedEulerAngleY()
     {
         return mUntappedEulerAngleY;
+    }
+
+    public void SetOwner(PLAYER_ID _owner)
+    {
+        mPlayerOwner = _owner;
+    }
+
+    void WhenSunnomed()
+    {
+
+    }
+
+    void AtTheEndOfTheTurn()
+    {
+
+    }
+
+    void AtTheBeginningOfTheTurn()
+    {
+
     }
 }

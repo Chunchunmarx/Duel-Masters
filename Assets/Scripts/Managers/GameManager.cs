@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum PLAYER_ID
 {
+    INVALID = 0,
     ONE = 1,
     TWO = 2
 };
@@ -20,7 +21,9 @@ public enum GAME_PHASE
 public class GameManager : MonoBehaviour
 {
     public GAME_PHASE mGamePhase = GAME_PHASE.INVALID;
-    public List<GameObject> mZoneList = null;
+    private List<GameObject> mZoneList = null;
+    public List<GameObject> mZoneList_P1 = null;
+    public List<GameObject> mZoneList_P2 = null;
     public static GameManager instance = null;
     private bool mCanHover = true;
     private bool mIsTargeting = false;
@@ -29,45 +32,56 @@ public class GameManager : MonoBehaviour
     private Card mTargetingCard = null;
     private Card mTargetedCard = null;
     private int mNextID = 0;
+
     public Deck mDeck_One;
+    public Deck mDeck_Two;
+
     public HandManager mHand_One;
+    public HandManager mHand_Two;
     public ShieldzoneManager mShieldzone_One = null;
+    public BattlezoneManager mBattlezone_One = null;
+    public BattlezoneManager mBattlezone_Two = null;
     public ManazoneManager mManazone_One = null;
     public ManazoneManager mManazone_Two = null;
     private ManazoneManager mActveManazone = null;
+
     private int mTurnCount = 0;
   
     private PLAYER_ID mActivePlayer = PLAYER_ID.ONE;
 
     
 
-    public void SetTargeting(Transform _targetingCard)
+    public void SetTargeting(Card _targetingCard)
     {
-        Card targetingCard = _targetingCard.GetComponent<Card>();
-        if (targetingCard == null)
-        {
-            Debug.LogWarning("GameManager::SetTargeting() parametrul nu are atasat Card!!!");
-            return;
-        }
-
-        mTargetingCard = targetingCard;
+        mTargetingCard = _targetingCard;
     }
 
-    public void SetTargeted(Transform _targetedCard)
+    public void SetTargeted(Card _targetedCard)
     {
-        Card targetedCard = _targetedCard.GetComponent<Card>();
-        if(targetedCard == null)
-        {
-            Debug.LogWarning("GameManager::SetTargeted() parametrul nu are atasat Card!!!");
-            return;
-        }
-
-        mTargetedCard = targetedCard;
+        mTargetedCard = _targetedCard;
     }
 
     public bool IsTargeting()
     {
         return mIsTargeting;
+    }
+
+    public bool CanSummon(Card _card)
+    {
+        bool canSummon = mActveManazone.CanSummon(_card);
+
+        if(canSummon == false)
+        {
+            return false;
+        }
+
+        mActveManazone.Summoned();
+        return true;
+    }
+
+    public bool CanPlayMana(Card _card)
+    {
+        return mActveManazone.CanPlayMana(_card);
     }
 
     public void EndTurn()
@@ -78,9 +92,18 @@ public class GameManager : MonoBehaviour
         mActivePlayer = mActivePlayer == PLAYER_ID.ONE ? PLAYER_ID.TWO : PLAYER_ID.ONE;
         if(mActivePlayer == PLAYER_ID.ONE)
         {
+            mZoneList = mZoneList_P1;
+            mActveManazone = mManazone_One;
             mHand_One.Draw();
-            mActveManazone.NewTurn();
         }
+        else
+        {
+            mZoneList = mZoneList_P2;
+            mActveManazone = mManazone_Two;
+            mHand_Two.Draw();
+        }
+
+        mActveManazone.NewTurn();
         mGamePhase = GAME_PHASE.MANA_PHASE;
     }
 
@@ -94,13 +117,30 @@ public class GameManager : MonoBehaviour
         return mCanHover;
     }
 
+    private bool PreconditionCheck()
+    {
+        if (mTargetedCard.GetPlayerOwner() == mTargetingCard.GetPlayerOwner())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void BlockerPhase()
+    {
+
+    }
+
     private void BattleHandler()
     {
-        if(mTargetedCard.GetPlayerOwner() == mTargetingCard.GetPlayerOwner())
+        if(PreconditionCheck() == false)
         {
             return;
         }
+
         mGamePhase = GAME_PHASE.ATTACKING_PHASE;
+        BlockerPhase();
 
         if(mTargetingCard.mPower == mTargetedCard.mPower)
         {
@@ -141,14 +181,21 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+
         ++mTurnCount;
-       
+
         mActivePlayer = PLAYER_ID.ONE;
         mGamePhase = GAME_PHASE.MANA_PHASE;
         mActveManazone = mManazone_One;
 
         mHand_One.SetDeck(mDeck_One);
+        mHand_Two.SetDeck(mDeck_Two);
+        mDeck_One.SetOwner(PLAYER_ID.ONE);
+        mDeck_Two.SetOwner(PLAYER_ID.TWO);
         mShieldzone_One.SetDeck(mDeck_One);
+
+        mBattlezone_One.SetOwner(PLAYER_ID.ONE);
+        mBattlezone_Two.SetOwner(PLAYER_ID.TWO);
 
         if (instance == null)
         {
@@ -162,6 +209,9 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
+        mZoneList = mZoneList_P2;
+        CardOnAir(false);
+        mZoneList = mZoneList_P1;
         CardOnAir(false);
     }
 	
@@ -245,10 +295,12 @@ public class GameManager : MonoBehaviour
     {
         return mActveManazone;
     }
+
     public GAME_PHASE GetGamePhase()
     {
         return mGamePhase;
     }
+
     public void SetGamePhase(GAME_PHASE _gamePhase)
     {
         if(_gamePhase <= mGamePhase)

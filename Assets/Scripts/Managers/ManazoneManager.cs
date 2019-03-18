@@ -73,6 +73,23 @@ public class ManazoneManager : MonoBehaviour
         }
     }
 
+    public void Summoned()
+    {
+        for (int i = 0; i < mCardList.Count; ++i)
+        {
+            if(mCardList[i].IsTapped() == true)
+            {
+                mCardList[i].LockTap();
+            }
+
+            mDarknessManaTapped = 0;
+            mLightManaTapped = 0;
+            mNatureManaTapped = 0;
+            mWaterManaTapped = 0;
+            mFireManaTapped = 0;
+        }
+    }
+
     public void ManaTap(CARD_CIVILIZATION _cardCivilization)
     {
         switch (_cardCivilization)
@@ -121,6 +138,12 @@ public class ManazoneManager : MonoBehaviour
                 Debug.LogWarning("GameManager::ManaTap() parametru invalid");
                 break;
         }
+
+        mDarknessManaTapped = mDarknessManaTapped < 0 ? 0 : mDarknessManaTapped;
+        mLightManaTapped = mLightManaTapped < 0 ? 0 : mLightManaTapped;
+        mNatureManaTapped = mNatureManaTapped < 0 ? 0 : mNatureManaTapped;
+        mWaterManaTapped = mWaterManaTapped < 0 ? 0 : mWaterManaTapped;
+        mFireManaTapped = mFireManaTapped < 0 ? 0 : mFireManaTapped;
     }
 
     public void NewTurn()

@@ -7,7 +7,11 @@ public class ManaState : CardState
     bool mIsTapped = false;
     bool mIsTappedLocked = false;
 
-    public ManaState(Card _card) : base(_card) { }
+
+    public ManaState(Card _card) : base(_card)
+    {
+        mCardState = CARD_STATE.MANAZONE;
+    }
 	
     public override void OnClick()
     {
@@ -26,7 +30,7 @@ public class ManaState : CardState
         }
     }
 
-    public void Tap()
+    private void Tap()
     {
         if (mIsTapped == true)
         {
@@ -42,7 +46,7 @@ public class ManaState : CardState
         mCardReference.transform.eulerAngles = new Vector3(oldRotation.x, mCardReference.GetUntappedEulerAngleY() + 90, oldRotation.z);
     }
 
-    public void Untap()
+    private void Untap()
     {
         if (mIsTapped == false || mIsTappedLocked == true)
         {
@@ -60,6 +64,33 @@ public class ManaState : CardState
 
     public override void NewTurn()
     {
+        //very nasty stuff
+        if(mIsTappedLocked == true)
+        {
+            mIsTappedLocked = false;
+
+            Vector3 origAngles = mCardReference.transform.eulerAngles;
+            mCardReference.transform.eulerAngles = new Vector3(origAngles.x, origAngles.y, origAngles.z - 180);
+        }
         Untap();
+
+    }
+
+    public override void LockTap()
+    {
+        if(mIsTappedLocked == true)
+        {
+            return;
+        }
+
+        mIsTappedLocked = true;
+
+        Vector3 origAngles = mCardReference.transform.eulerAngles;
+        mCardReference.transform.eulerAngles = new Vector3(origAngles.x, origAngles.y, origAngles.z + 180);
+    }
+
+    public override bool IsTapped()
+    {
+        return mIsTapped;
     }
 }
