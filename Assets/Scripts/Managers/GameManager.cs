@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public enum PLAYER_ID
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     private BattleState mTargetingCard = null;
     private BattleState mTargetedCard = null;
     private int mNextID = 0;
-
+    public Text mPlayerUIText;
     public Deck mDeck_One;
     public Deck mDeck_Two;
 
@@ -88,11 +89,9 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        mUITransform.position = new Vector3(mUITransform.position.x, mUITransform.position.y, mUITransform.position.z * -1);
-        mUITransform.eulerAngles = new Vector3(mUITransform.eulerAngles.x, mUITransform.eulerAngles.y + 180, mUITransform.eulerAngles.z);
-
         mActivePlayer = mActivePlayer == PLAYER_ID.ONE ? PLAYER_ID.TWO : PLAYER_ID.ONE;
-        if(mActivePlayer == PLAYER_ID.ONE)
+        ChangeUI();
+        if (mActivePlayer == PLAYER_ID.ONE)
         {
             mZoneList = mZoneList_P1;
             mActveManazone = mManazone_One;
@@ -112,6 +111,19 @@ public class GameManager : MonoBehaviour
         mActveManazone.NewTurn();
         mActiveBattlezone.NewTurn();
         mGamePhase = GAME_PHASE.MANA_PHASE;
+    }
+    private void ChangeUI()
+    {
+        mUITransform.position = new Vector3(mUITransform.position.x, mUITransform.position.y, mUITransform.position.z * -1);
+        mUITransform.eulerAngles = new Vector3(mUITransform.eulerAngles.x, mUITransform.eulerAngles.y + 180, mUITransform.eulerAngles.z);
+        if (mActivePlayer == PLAYER_ID.ONE)
+        {
+            mPlayerUIText.text = "Player 1";
+        }
+        else
+        {
+            mPlayerUIText.text = "Player 2";
+        }
     }
 
     public void SetCanHover( bool _canHover)
