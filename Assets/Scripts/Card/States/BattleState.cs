@@ -8,6 +8,7 @@ public class BattleState : CardState
     private bool mIsTapped = false;
     private bool mHasSummoningSickness;
     private bool mIsTargeting = false;
+    private BattlezoneManager mBattlezoneManager = null;
 
     public BattleState(Card _card) : base(_card)
     {
@@ -88,5 +89,10 @@ public class BattleState : CardState
     {
         mIsTargeting = _targeting;
         mCardReference.TurnLineRenderer(mIsTargeting);
+    }
+
+    public void SetBattlezoneManager(BattlezoneManager _manager)
+    {
+        mBattlezoneManager = _manager;
     }
 }

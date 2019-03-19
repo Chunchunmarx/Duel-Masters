@@ -14,6 +14,7 @@ public enum CARD_CIVILIZATION
 
 public class Card : MonoBehaviour
 {
+    private List<EFFECTS> mEffects;
     private CARD_CIVILIZATION mCardCivilization;
     //private CARD_STATE mCardState.GetState()= CARD_STATE.INVALID;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
@@ -142,7 +143,6 @@ public class Card : MonoBehaviour
 
         if (mHasEnteredBattlezone == true && GameManager.instance.CanSummon(GetComponent<Card>()) == true)
         {
-            SetCardState(new BattleState(GetComponent<Card>()));
             mBattlezoneManager.AddCard(this);
             return;
         }
@@ -173,7 +173,13 @@ public class Card : MonoBehaviour
         }
     }
 
-     void OnTriggerExit(Collider _collider)
+    public void Defeated()
+    {
+        mCardState.ToGraveyard();
+        Destroy(gameObject);
+    }
+
+    void OnTriggerExit(Collider _collider)
     {
         if (_collider.gameObject.GetComponent<BattlezoneManager>() != null)
         {
@@ -346,5 +352,23 @@ public class Card : MonoBehaviour
     public int GetPower()
     {
         return mPower;
+    }
+
+    public bool HasEffect(EFFECTS _effect)
+    {
+        for(int i = 0; i < mEffects.Count; ++i)
+        {
+            if(mEffects[i] == _effect)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void SetEffects(List<EFFECTS> _list)
+    {
+        mEffects = _list;
     }
 }

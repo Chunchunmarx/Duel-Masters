@@ -53,6 +53,7 @@ public class Deck : MonoBehaviour
         newCard.SetManaRequired(modelInfo.ManaRequired);
         
         newCard.GetComponent<MeshRenderer>().material = modelMaterial;
+        newCard.SetEffects(modelInfo.Effects);
 
         return newCard;
     }

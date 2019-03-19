@@ -159,16 +159,21 @@ public class GameManager : MonoBehaviour
 
         if (attackerPower == attackedPower)
         {
-            Destroy(mTargetingCard.GetGameObject());
-            Destroy(mTargetedCard.GetGameObject());
+            //Destroy(mTargetingCard.GetGameObject());
+            //Destroy(mTargetedCard.GetGameObject());
+
+            mTargetingCard.GetGameObject().GetComponent<Card>().Defeated();
+            mTargetedCard.GetGameObject().GetComponent<Card>().Defeated();
         }
         else if(attackerPower > attackedPower)
         {
-            Destroy(mTargetedCard.GetGameObject());
+            //Destroy(mTargetedCard.GetGameObject());
+            mTargetedCard.GetGameObject().GetComponent<Card>().Defeated();
         }
         else
         {
-            Destroy(mTargetingCard.GetGameObject());
+            //Destroy(mTargetingCard.GetGameObject());
+            mTargetingCard.GetGameObject().GetComponent<Card>().Defeated();
         }
     }
 

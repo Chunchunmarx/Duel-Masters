@@ -8,6 +8,12 @@ public class BattlezoneManager : MonoBehaviour
     public List<Transform> mInitCardList;
     private float mNextCardPoz = -2;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
+    private List<Card> mBlockerList;
+
+    void Awake()
+    {
+        mBlockerList = new List<Card>();
+    }
 
     public void AddCard(Card _card)
     {
@@ -15,6 +21,16 @@ public class BattlezoneManager : MonoBehaviour
         _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z + 0.1f);
         mNextCardPoz += 1.5f;
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
+
+        BattleState battleState = new BattleState(_card);
+        battleState.SetBattlezoneManager(this);
+
+        _card.SetCardState(battleState);
+
+        if(_card.HasEffect(EFFECTS.BLOCKER) == true)
+        {
+            mBlockerList.Add(_card);
+        }
     }
     
     /*
