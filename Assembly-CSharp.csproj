@@ -63,14 +63,16 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Abilities\AbilitiesData.cs" />
     <Compile Include="Assets\Scripts\Abilities\AbilitiesHolder.cs" />
+    <Compile Include="Assets\Scripts\Abilities\ConditionData.cs" />
+    <Compile Include="Assets\Scripts\Abilities\ConditionHolder.cs" />
     <Compile Include="Assets\Scripts\Card\Card.cs" />
     <Compile Include="Assets\Scripts\Card\CardFactory.cs" />
     <Compile Include="Assets\Scripts\Card\CardState.cs" />
-    <Compile Include="Assets\Scripts\Card\Effects.cs" />
     <Compile Include="Assets\Scripts\Card\States\BattleState.cs" />
     <Compile Include="Assets\Scripts\Card\States\DeckState.cs" />
     <Compile Include="Assets\Scripts\Card\States\HandState.cs" />
     <Compile Include="Assets\Scripts\Card\States\ManaState.cs" />
+    <Compile Include="Assets\Scripts\Card\Traits.cs" />
     <Compile Include="Assets\Scripts\CardCollection.cs" />
     <Compile Include="Assets\Scripts\Deck.cs" />
     <Compile Include="Assets\Scripts\EndTurnButton.cs" />

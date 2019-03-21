@@ -98,4 +98,17 @@ MonoBehaviour:
   CardCivilization: 5
   Power: 3000
   ManaRequired: 2
-  Effects: 01000000
+  Traits: 01000000
+  AbilityData:
+    mAbilityMoment: 0
+    mMaxNumber: -1
+    mAbilityCallback:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: AbilitiesCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    Condition:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: ConditionCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null

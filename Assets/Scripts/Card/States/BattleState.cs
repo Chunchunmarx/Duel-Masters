@@ -107,6 +107,8 @@ public class BattleState : CardState
             return;
         }
 
+        ConditionData condition = new ConditionData();
+        abilityData.Condition.Invoke(mCardReference, condition);
         ability.Invoke(abilityData);
     }
 }

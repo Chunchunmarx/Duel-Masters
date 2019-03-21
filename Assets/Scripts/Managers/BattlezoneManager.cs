@@ -27,7 +27,7 @@ public class BattlezoneManager : MonoBehaviour
 
         _card.SetCardState(battleState);
 
-        if (_card.HasEffect(EFFECTS.BLOCKER) == true)
+        if (_card.HasTraits(TRAITS.BLOCKER) == true)
         {
             mBlockerList.Add(_card);
         }

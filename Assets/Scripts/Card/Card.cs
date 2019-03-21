@@ -16,7 +16,7 @@ public delegate void SendCardTo();
 
 public class Card : MonoBehaviour
 {
-    private List<EFFECTS> mEffects;
+    private List<TRAITS> mTraits;
     private CARD_CIVILIZATION mCardCivilization;
     //private CARD_STATE mCardState.GetState()= CARD_STATE.INVALID;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
@@ -353,11 +353,11 @@ public class Card : MonoBehaviour
         return mPower;
     }
 
-    public bool HasEffect(EFFECTS _effect)
+    public bool HasTraits(TRAITS _trait)
     {
-        for(int i = 0; i < mEffects.Count; ++i)
+        for(int i = 0; i < mTraits.Count; ++i)
         {
-            if(mEffects[i] == _effect)
+            if(mTraits[i] == _trait)
             {
                 return true;
             }
@@ -366,9 +366,9 @@ public class Card : MonoBehaviour
         return false;
     }
 
-    public void SetEffects(List<EFFECTS> _list)
+    public void SetTraits(List<TRAITS> _list)
     {
-        mEffects = _list;
+        mTraits = _list;
     }
 
     public void SetAbilityData(AbilitiesData _data)
