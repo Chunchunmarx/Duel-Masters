@@ -12,6 +12,8 @@ public enum CARD_CIVILIZATION
     WATER
 };
 
+public delegate void SendCardTo();
+
 public class Card : MonoBehaviour
 {
     private List<EFFECTS> mEffects;
@@ -33,6 +35,8 @@ public class Card : MonoBehaviour
     private bool mHasEnteredBattlezone = false;
     private bool mHasEnteredManazone = false;
     private bool mIsInAir = false;
+
+    private AbilitiesData mAbilityData = null;
    
 
     private LineRenderer mLineRenderer;
@@ -311,11 +315,6 @@ public class Card : MonoBehaviour
         mPlayerOwner = _owner;
     }
 
-    void WhenSunnomed()
-    {
-
-    }
-
     void AtTheEndOfTheTurn()
     {
 
@@ -370,5 +369,15 @@ public class Card : MonoBehaviour
     public void SetEffects(List<EFFECTS> _list)
     {
         mEffects = _list;
+    }
+
+    public void SetAbilityData(AbilitiesData _data)
+    {
+        mAbilityData = _data;
+    }
+
+    public AbilitiesData GetAbilityData()
+    {
+        return mAbilityData;
     }
 }

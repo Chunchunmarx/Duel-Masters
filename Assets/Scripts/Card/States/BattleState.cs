@@ -95,4 +95,18 @@ public class BattleState : CardState
     {
         mBattlezoneManager = _manager;
     }
+
+    public void WhenSummoned()
+    {
+        AbilitiesData abilityData = mCardReference.GetAbilityData();
+        AbilitiesCallback ability = abilityData.mAbilityCallback;
+
+        if(abilityData.mAbilityMoment != ABILITY_MOMENT.BATTLECRY)
+        {
+            Debug.LogWarning("Se cere battlecry cand abiltiatea nu e battlecry!!!");
+            return;
+        }
+
+        ability.Invoke(abilityData);
+    }
 }

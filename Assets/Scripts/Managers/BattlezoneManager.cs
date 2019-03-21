@@ -27,10 +27,12 @@ public class BattlezoneManager : MonoBehaviour
 
         _card.SetCardState(battleState);
 
-        if(_card.HasEffect(EFFECTS.BLOCKER) == true)
+        if (_card.HasEffect(EFFECTS.BLOCKER) == true)
         {
             mBlockerList.Add(_card);
         }
+
+        battleState.WhenSummoned();
     }
     
     /*

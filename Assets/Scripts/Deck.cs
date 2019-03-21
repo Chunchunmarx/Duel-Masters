@@ -8,6 +8,9 @@ public class Deck : MonoBehaviour
     public Transform mCardPrefab;
     private List<Card> mDeck;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
+    private int mDrawNumber = -1;
+    private Material mDeckMaterial = null;
+    private Color mDeckColor;
 
     public Card Draw()
     {
@@ -27,6 +30,8 @@ public class Deck : MonoBehaviour
     void Awake()
     {
         mDeck = new List<Card>();
+        mDeckMaterial = GetComponentInParent<Renderer>().material;
+        mDeckColor = mDeckMaterial.GetColor("_Color");
     }
 
     void Start ()
@@ -54,6 +59,7 @@ public class Deck : MonoBehaviour
         
         newCard.GetComponent<MeshRenderer>().material = modelMaterial;
         newCard.SetEffects(modelInfo.Effects);
+        newCard.SetAbilityData(modelInfo.AbilityData);
 
         return newCard;
     }
@@ -72,4 +78,29 @@ public class Deck : MonoBehaviour
     {
 		
 	}
+
+    public void CanDraw(int _numberOfCards)
+    {
+        mDrawNumber = _numberOfCards;
+
+        //mDeckColor.
+        if (_numberOfCards > 0)
+        {
+            mDeckMaterial.SetColor("_Color", Color.white);
+        }
+        else
+        {
+            mDeckMaterial.SetColor("_Color", mDeckColor);
+        }
+    }
+
+    void OnMouseDown()
+    {
+        if(mDrawNumber < 1)
+        {
+            return;
+        }
+
+        GameManager.instance.Draw();
+    }
 }
