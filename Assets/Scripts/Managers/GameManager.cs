@@ -367,4 +367,25 @@ public class GameManager : MonoBehaviour
         mDrawNumber = _numberOfCards;
         mActiveDeck.CanDraw(mDrawNumber);
     }
+
+    public List<Card> GetConditionalList(ConditionCallback _conditionCallback, ConditionData _data)
+    {
+        if(_data.Targets != TARGETS.ALL)
+        {
+            Debug.LogWarning("NEIMPLEMENTAT!");
+            return null;
+        }
+        if(_data.Targets == TARGETS.ALL)
+        {
+            List<Card> returnList;
+            List<Card> list_1;
+            List<Card> list_2;
+            list_1 = mBattlezone_One.GetConditionalList(_conditionCallback, _data);
+            list_2 = mBattlezone_Two.GetConditionalList(_conditionCallback, _data);
+
+            list_1.AddRange(list_2);
+            return list_1;
+        }
+        return null;
+    }
 }

@@ -16,12 +16,21 @@ public enum ABILITY_MOMENT
 public class AbilitiesData
 {
     [SerializeField]
-    public ABILITY_MOMENT mAbilityMoment = ABILITY_MOMENT.INVALID;
-    [SerializeField]
-    public int mMaxNumber = -1;
-    [SerializeField]
     public AbilitiesCallback mAbilityCallback = null;
     [SerializeField]
     public ConditionCallback Condition = null;
+    [SerializeField]
+    public ConditionData Condition_Data = null;
+    [SerializeField]
+    public ABILITY_MOMENT mAbilityMoment = ABILITY_MOMENT.INVALID;
+    [SerializeField]
+    public int mMaxNumber = -1;
+
+
+    public void DoAbility(Card _card)
+    {
+        Condition.Invoke(_card, Condition_Data);
+        mAbilityCallback.Invoke(this);
+    }
 
 }

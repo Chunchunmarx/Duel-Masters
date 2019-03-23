@@ -99,7 +99,7 @@ public class BattleState : CardState
     public void WhenSummoned()
     {
         AbilitiesData abilityData = mCardReference.GetAbilityData();
-        AbilitiesCallback ability = abilityData.mAbilityCallback;
+        //AbilitiesCallback ability = abilityData.mAbilityCallback;
 
         if(abilityData.mAbilityMoment != ABILITY_MOMENT.BATTLECRY)
         {
@@ -107,8 +107,9 @@ public class BattleState : CardState
             return;
         }
 
-        ConditionData condition = new ConditionData();
-        abilityData.Condition.Invoke(mCardReference, condition);
-        ability.Invoke(abilityData);
+        //ConditionData condition = new ConditionData();
+        //abilityData.Condition.Invoke(mCardReference, condition);
+        //ability.Invoke(abilityData);
+        abilityData.DoAbility(mCardReference);
     }
 }

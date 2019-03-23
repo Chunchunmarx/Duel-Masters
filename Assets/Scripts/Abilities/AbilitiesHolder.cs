@@ -17,8 +17,21 @@ public class AbilitiesHolder : MonoBehaviour
 
     public void Draw(AbilitiesData _data)
     {
-        //Debug.Log("Draw X");
         GameManager.instance.CanDraw(_data.mMaxNumber);
+    }
+
+    public void Destroy(AbilitiesData _data)
+    {
+        if(_data.Condition_Data.Targets == TARGETS.ALL)
+        {
+            List<Card> cardList;
+            cardList = GameManager.instance.GetConditionalList(_data.Condition, _data.Condition_Data);
+
+            for(int i = 0; i < cardList.Count; ++i)
+            {
+                cardList[i].Defeated();
+            }
+        }
     }
 
     public void Tap(AbilitiesData _card)

@@ -10,6 +10,8 @@ public enum TARGETS
     PLAYER,
     CHOICE
 }
+
+[System.Serializable]
 public class ConditionData
 {
     public bool Response = false;

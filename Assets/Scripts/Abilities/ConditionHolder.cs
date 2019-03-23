@@ -26,6 +26,11 @@ public class ConditionCallback : UnityEvent<Card, ConditionData>
 
 public class ConditionHolder : MonoBehaviour
 {
+    public void NoCondition(Card _card, ConditionData _data)
+    {
+
+    }
+
     public void CheckTrait(Card _card, ConditionData _data)
     {
         if(_card.HasTraits(TRAITS.BLOCKER) == true)

@@ -69,4 +69,19 @@ public class BattlezoneManager : MonoBehaviour
     {
         mPlayerOwner = _owner;
     }
+
+    public List<Card> GetConditionalList(ConditionCallback _conditionCallback, ConditionData _data)
+    {
+        List<Card> list = new List<Card>();
+        for (int i = 0; i < mCardList.Count; ++i)
+        {
+            _conditionCallback.Invoke(mCardList[i], _data);
+            if (_data.Response == true)
+            {
+                list.Add(mCardList[i]);
+            }
+        }
+
+        return list;
+    }
 }
