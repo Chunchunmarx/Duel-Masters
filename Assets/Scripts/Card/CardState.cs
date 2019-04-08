@@ -57,12 +57,14 @@ public class CardState
 
     public void ToGraveyard()
     {
-
+        LeaveState();
+        Object.Destroy(mCardReference);
     }
 
     public void ToHand()
     {
-
+        LeaveState();
+        GameManager.instance.GetMyHandManager(mCardReference).AddCardToHand(mCardReference);
     }
 
     public void ToMana()
@@ -77,6 +79,6 @@ public class CardState
 
     public virtual void LeaveState()
     {
-
+        Debug.LogWarning("Not implemented LeaveState()!!!");
     }
 }

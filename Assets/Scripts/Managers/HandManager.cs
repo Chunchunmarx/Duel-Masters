@@ -30,15 +30,7 @@ public class HandManager : MonoBehaviour
 
     public void Draw()
     {
-        mCardList.Add(mDeck.Draw());
-        //mCardList[mCardList.Count - 1].SetHandManager(this);
-
-        HandState handState = new HandState(mCardList[mCardList.Count - 1]);
-        handState.SetHandManager(this);
-        mCardList[mCardList.Count - 1].SetCardState(handState);
-        mCardList[mCardList.Count - 1].SetUntappedEulerAngleY(transform.eulerAngles.y);
-
-        RepositionCards();
+        AddCardToHand(mDeck.Draw());
     }
 
     private void RepositionCards()
@@ -50,9 +42,9 @@ public class HandManager : MonoBehaviour
             Quaternion rotation = transform.rotation;
             rotation.eulerAngles = new Vector3(transform.eulerAngles.x + 1, transform.eulerAngles.y, transform.eulerAngles.z);
             position = transform.TransformPoint(new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 10 + 27f / (handSize) * i));
-
-            mCardList[i].transform.position = position;
+            position = new Vector3(transform.position.x, position.y, position.z);
             mCardList[i].transform.rotation = rotation;
+            mCardList[i].transform.position = position;
             mCardList[i].transform.localScale = transform.lossyScale;
 
             mCardList[i].SetOrgigPosition(position);
@@ -63,6 +55,19 @@ public class HandManager : MonoBehaviour
     public void RemoveCardFromHand(Card _card)
     {
         mCardList.Remove(_card);
+        RepositionCards();
+    }
+
+    public void AddCardToHand(Card _card)
+    {
+        mCardList.Add(_card);
+        //mCardList[mCardList.Count - 1].SetHandManager(this);
+
+        HandState handState = new HandState(mCardList[mCardList.Count - 1]);
+        handState.SetHandManager(this);
+        mCardList[mCardList.Count - 1].SetCardState(handState);
+        mCardList[mCardList.Count - 1].SetUntappedEulerAngleY(transform.eulerAngles.y);
+        
         RepositionCards();
     }
 	
@@ -79,6 +84,6 @@ public class HandManager : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-		
-	}
+        RepositionCards();
+    }
 }

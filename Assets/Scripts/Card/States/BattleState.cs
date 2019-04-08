@@ -74,6 +74,11 @@ public class BattleState : CardState
         mHasSummoningSickness = false;
     }
 
+    public override void LeaveState()
+    {
+        mBattlezoneManager.RemoveCard(mCardReference);
+    }
+
     public int GetPower()
     {
         return mCardReference.GetPower();
@@ -103,10 +108,11 @@ public class BattleState : CardState
 
         if(abilityData.mAbilityMoment != ABILITY_MOMENT.BATTLECRY)
         {
-            Debug.LogWarning("Se cere battlecry cand abiltiatea nu e battlecry!!!");
+            //Debug.LogWarning("Se cere battlecry cand abiltiatea nu e battlecry!!!");
             return;
         }
 
+        //de sters
         //ConditionData condition = new ConditionData();
         //abilityData.Condition.Invoke(mCardReference, condition);
         //ability.Invoke(abilityData);

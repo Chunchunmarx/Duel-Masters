@@ -179,8 +179,19 @@ public class Card : MonoBehaviour
 
     public void Defeated()
     {
-        mCardState.ToGraveyard();
-        Destroy(gameObject);
+        if (mAbilityData.mAbilityMoment == ABILITY_MOMENT.DEATHRATTLE)
+        {
+            mAbilityData.DoAbility(GetComponent<Card>());
+        }
+        else
+        {
+            mCardState.ToGraveyard();
+        }
+    }
+
+    public void ToHand()
+    {
+        mCardState.ToHand();
     }
 
     void OnTriggerExit(Collider _collider)

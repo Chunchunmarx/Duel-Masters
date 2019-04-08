@@ -22,10 +22,10 @@ public class AbilitiesHolder : MonoBehaviour
 
     public void Destroy(AbilitiesData _data)
     {
-        if(_data.Condition_Data.Targets == TARGETS.ALL)
+        if(_data.GetConditionData().Targets == TARGETS.ALL)
         {
             List<Card> cardList;
-            cardList = GameManager.instance.GetConditionalList(_data.Condition, _data.Condition_Data);
+            cardList = GameManager.instance.GetConditionalList(_data.GetConditionData());
 
             for(int i = 0; i < cardList.Count; ++i)
             {
@@ -34,7 +34,25 @@ public class AbilitiesHolder : MonoBehaviour
         }
     }
 
-    public void Tap(AbilitiesData _card)
+    public void ReturnToHand(AbilitiesData _data)
+    {
+        List<Card> cardList;
+        if (_data.GetConditionData().Targets == TARGETS.ALL)
+        {
+            cardList = GameManager.instance.GetConditionalList(_data.GetConditionData());
+
+            for (int i = 0; i < cardList.Count; ++i)
+            {
+                cardList[i].ToHand();
+            }
+        }
+        else if(_data.GetConditionData().Targets == TARGETS.SELF)
+        {
+            _data.mCaster.ToHand();
+        }
+    }
+
+        public void Tap(AbilitiesData _card)
     {
         //to be done
     }

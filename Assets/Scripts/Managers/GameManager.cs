@@ -368,7 +368,7 @@ public class GameManager : MonoBehaviour
         mActiveDeck.CanDraw(mDrawNumber);
     }
 
-    public List<Card> GetConditionalList(ConditionCallback _conditionCallback, ConditionData _data)
+    public List<Card> GetConditionalList(ConditionData _data)
     {
         if(_data.Targets != TARGETS.ALL)
         {
@@ -380,12 +380,23 @@ public class GameManager : MonoBehaviour
             List<Card> returnList;
             List<Card> list_1;
             List<Card> list_2;
-            list_1 = mBattlezone_One.GetConditionalList(_conditionCallback, _data);
-            list_2 = mBattlezone_Two.GetConditionalList(_conditionCallback, _data);
-
+            list_1 = mBattlezone_One.GetConditionalList(_data);
+            list_2 = mBattlezone_Two.GetConditionalList(_data);
             list_1.AddRange(list_2);
             return list_1;
         }
         return null;
+    }
+
+    public HandManager GetMyHandManager(Card _card)
+    {
+        if(_card.GetPlayerOwner() == PLAYER_ID.ONE)
+        {
+            return mHand_One;
+        }
+        else
+        {
+            return mHand_Two;
+        }
     }
 }
