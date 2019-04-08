@@ -29,7 +29,7 @@ public class ManazoneManager : MonoBehaviour
         mCardList.Add(_card);
         _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.21f, transform.position.z);
         mNextCardPoz += 1.5f;
-        _card.transform.eulerAngles = new Vector3(_card.transform.eulerAngles.x, _card.transform.eulerAngles.y + 180, _card.transform.eulerAngles.z);
+        _card.transform.eulerAngles = new Vector3(transform.eulerAngles.x, _card.transform.eulerAngles.y == 0 ? 180 : 0, transform.eulerAngles.z);//_card.transform.eulerAngles.y == 0 ? 180 : 0
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
         _card.SetUntappedEulerAngleY(_card.transform.eulerAngles.y);
     }

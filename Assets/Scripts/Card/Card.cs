@@ -12,9 +12,11 @@ public enum CARD_CIVILIZATION
     WATER
 };
 
+public delegate void SendCardTo();
+
 public class Card : MonoBehaviour
 {
-    private List<EFFECTS> mEffects;
+    private List<TRAITS> mTraits;
     private CARD_CIVILIZATION mCardCivilization;
     //private CARD_STATE mCardState.GetState()= CARD_STATE.INVALID;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
@@ -33,6 +35,8 @@ public class Card : MonoBehaviour
     private bool mHasEnteredBattlezone = false;
     private bool mHasEnteredManazone = false;
     private bool mIsInAir = false;
+
+    private AbilitiesData mAbilityData = null;
    
 
     private LineRenderer mLineRenderer;
@@ -175,8 +179,19 @@ public class Card : MonoBehaviour
 
     public void Defeated()
     {
-        mCardState.ToGraveyard();
-        Destroy(gameObject);
+        if (mAbilityData.mAbilityMoment == ABILITY_MOMENT.DEATHRATTLE)
+        {
+            mAbilityData.DoAbility(GetComponent<Card>());
+        }
+        else
+        {
+            mCardState.ToGraveyard();
+        }
+    }
+
+    public void ToHand()
+    {
+        mCardState.ToHand();
     }
 
     void OnTriggerExit(Collider _collider)
@@ -311,11 +326,6 @@ public class Card : MonoBehaviour
         mPlayerOwner = _owner;
     }
 
-    void WhenSunnomed()
-    {
-
-    }
-
     void AtTheEndOfTheTurn()
     {
 
@@ -354,11 +364,11 @@ public class Card : MonoBehaviour
         return mPower;
     }
 
-    public bool HasEffect(EFFECTS _effect)
+    public bool HasTraits(TRAITS _trait)
     {
-        for(int i = 0; i < mEffects.Count; ++i)
+        for(int i = 0; i < mTraits.Count; ++i)
         {
-            if(mEffects[i] == _effect)
+            if(mTraits[i] == _trait)
             {
                 return true;
             }
@@ -367,8 +377,18 @@ public class Card : MonoBehaviour
         return false;
     }
 
-    public void SetEffects(List<EFFECTS> _list)
+    public void SetTraits(List<TRAITS> _list)
     {
-        mEffects = _list;
+        mTraits = _list;
+    }
+
+    public void SetAbilityData(AbilitiesData _data)
+    {
+        mAbilityData = _data;
+    }
+
+    public AbilitiesData GetAbilityData()
+    {
+        return mAbilityData;
     }
 }

@@ -36,10 +36,11 @@ public class GameManager : MonoBehaviour
     public Text mPlayerUIText;
     public Deck mDeck_One;
     public Deck mDeck_Two;
+    private Deck mActiveDeck = null;
 
     public HandManager mHand_One;
     public HandManager mHand_Two;
-    private HandManager mActiveHandManager = null;
+    private HandManager mActiveHand = null;
     public ShieldzoneManager mShieldzone_One = null;
     public BattlezoneManager mBattlezone_One = null;
     public BattlezoneManager mBattlezone_Two = null;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     public ManazoneManager mManazone_Two = null;
     private ManazoneManager mActveManazone = null;
 
+    private int mDrawNumber = -1;
     private int mTurnCount = 0;
   
     private PLAYER_ID mActivePlayer = PLAYER_ID.ONE;
@@ -95,19 +97,20 @@ public class GameManager : MonoBehaviour
         {
             mZoneList = mZoneList_P1;
             mActveManazone = mManazone_One;
+            mActiveDeck = mDeck_One;
             mActiveBattlezone = mBattlezone_One;
-            mActiveHandManager = mHand_One;
-            mHand_One.Draw();
+            mActiveHand = mHand_One;
         }
         else
         {
             mZoneList = mZoneList_P2;
             mActveManazone = mManazone_Two;
+            mActiveDeck = mDeck_Two;
             mActiveBattlezone = mBattlezone_Two;
-            mActiveHandManager = mHand_Two;
-            mHand_Two.Draw();
+            mActiveHand = mHand_Two;
         }
 
+        mActiveHand.Draw();
         mActveManazone.NewTurn();
         mActiveBattlezone.NewTurn();
         mGamePhase = GAME_PHASE.MANA_PHASE;
@@ -219,7 +222,8 @@ public class GameManager : MonoBehaviour
         mActivePlayer = PLAYER_ID.ONE;
         mGamePhase = GAME_PHASE.MANA_PHASE;
         mActveManazone = mManazone_One;
-        mActiveHandManager = mHand_One;
+        mActiveDeck = mDeck_One;
+        mActiveHand = mHand_One;
 
         mHand_One.SetDeck(mDeck_One);
         mHand_Two.SetDeck(mDeck_Two);
@@ -283,6 +287,7 @@ public class GameManager : MonoBehaviour
             mTargetingCard.SetIsTargeting(true);
         }
     }
+
 
     public void HoverEnter(Transform _hoveredCard)
     {
@@ -348,5 +353,50 @@ public class GameManager : MonoBehaviour
     public bool GetIsTargeting()
     {
         return mIsTargeting;
+    }
+
+    public void Draw()
+    {
+        mActiveHand.Draw();
+        mDrawNumber--;
+        CanDraw(mDrawNumber);
+    }
+
+    public void CanDraw(int _numberOfCards)
+    {
+        mDrawNumber = _numberOfCards;
+        mActiveDeck.CanDraw(mDrawNumber);
+    }
+
+    public List<Card> GetConditionalList(ConditionData _data)
+    {
+        if(_data.Targets != TARGETS.ALL)
+        {
+            Debug.LogWarning("NEIMPLEMENTAT!");
+            return null;
+        }
+        if(_data.Targets == TARGETS.ALL)
+        {
+            List<Card> returnList;
+            List<Card> list_1;
+            List<Card> list_2;
+            list_1 = mBattlezone_One.GetConditionalList(_data);
+            list_2 = mBattlezone_Two.GetConditionalList(_data);
+            list_1.AddRange(list_2);
+            return list_1;
+        }
+        return null;
+    }
+
+    public HandManager GetMyHandManager(Card _card)
+    {
+        if(_card.GetPlayerOwner() == PLAYER_ID.ONE)
+        {
+            return mHand_One;
+        }
+        else
+        {
+            return mHand_Two;
+        }
     }
 }

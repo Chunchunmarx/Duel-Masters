@@ -98,4 +98,46 @@ MonoBehaviour:
   CardCivilization: 5
   Power: 1000
   ManaRequired: 2
-  Effects: 
+  Traits: 
+  AbilityData:
+    mAbilityCallback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114787812068006288, guid: db14b0b4f8f08d4448c92cced4d00f0e,
+            type: 2}
+          m_MethodName: ReturnToHand
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: AbilitiesCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    Condition_Data:
+      Condition:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 114902695294574270, guid: 496db3979ed1f344c8032cce2df74fef,
+              type: 2}
+            m_MethodName: CheckPower
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+        m_TypeName: ConditionCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+      Response: 0
+      Number: 2000
+      Trait: 0
+      Targets: 1
+    mAbilityMoment: 1
+    mMaxNumber: -1

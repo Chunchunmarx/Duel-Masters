@@ -21,16 +21,24 @@ public class BattlezoneManager : MonoBehaviour
         _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z + 0.1f);
         mNextCardPoz += 1.5f;
         _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
+        _card.transform.eulerAngles = new Vector3(0, _card.transform.eulerAngles.y == 0 ? 0 : 180, 0);
 
         BattleState battleState = new BattleState(_card);
         battleState.SetBattlezoneManager(this);
 
         _card.SetCardState(battleState);
 
-        if(_card.HasEffect(EFFECTS.BLOCKER) == true)
+        if (_card.HasTraits(TRAITS.BLOCKER) == true)
         {
             mBlockerList.Add(_card);
         }
+
+        battleState.WhenSummoned();
+    }
+
+    public void RemoveCard(Card _card)
+    {
+        mCardList.Remove(_card);
     }
     
     /*
@@ -66,5 +74,20 @@ public class BattlezoneManager : MonoBehaviour
     public void SetOwner(PLAYER_ID _owner)
     {
         mPlayerOwner = _owner;
+    }
+
+    public List<Card> GetConditionalList(ConditionData _data)
+    {
+        List<Card> list = new List<Card>();
+        for (int i = 0; i < mCardList.Count; ++i)
+        {
+            _data.GetConditionCallback().Invoke(mCardList[i], _data);
+            if (_data.Response == true)
+            {
+                list.Add(mCardList[i]);
+            }
+        }
+
+        return list;
     }
 }

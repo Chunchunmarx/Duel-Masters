@@ -98,4 +98,34 @@ MonoBehaviour:
   CardCivilization: 5
   Power: 2000
   ManaRequired: 3
-  Effects: 
+  Traits: 
+  AbilityData:
+    mAbilityCallback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114787812068006288, guid: db14b0b4f8f08d4448c92cced4d00f0e,
+            type: 2}
+          m_MethodName: Draw
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: AbilitiesCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    Condition:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: ConditionCallback, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    Condition_Data:
+      Response: 0
+      Number: 0
+      Trait: 0
+      Targets: 0
+    mAbilityMoment: 1
+    mMaxNumber: 2
