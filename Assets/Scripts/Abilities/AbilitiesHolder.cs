@@ -30,9 +30,7 @@ public class AbilitiesHolder : MonoBehaviour
             for(int i = 0; i < cardList.Count; ++i)
             {
                 cardList[i].Defeated();
-                Debug.Log(cardList.Count);
             }
-            
         }
     }
 

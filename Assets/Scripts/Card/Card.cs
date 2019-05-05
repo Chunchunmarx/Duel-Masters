@@ -177,11 +177,6 @@ public class Card : MonoBehaviour
         }
     }
 
-    public void OnDestroy()
-    {
-        Debug.Log("I am ded");
-    }
-
     public void Defeated()
     {
         if (mAbilityData.mAbilityMoment == ABILITY_MOMENT.DEATHRATTLE)
@@ -190,7 +185,6 @@ public class Card : MonoBehaviour
         }
         else
         {
-            Debug.Log("Defeated");
             mCardState.ToGraveyard();
         }
     }
