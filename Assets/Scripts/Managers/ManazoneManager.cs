@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManazoneManager : MonoBehaviour
+public class ManazoneManager : GameZoneManager
 {
-    
-    public List<Card> mCardList;
-    private float mNextCardPoz = -2;
     //private PLAYER_ID mOwner;
     private int mNatureManaTapped = 0;
     private int mLightManaTapped = 0;
@@ -24,15 +21,19 @@ public class ManazoneManager : MonoBehaviour
         GameManager.instance.SetGamePhase(GAME_PHASE.SUMMONING_PHASE);
         return true;
     }
-    public void AddCard(Card _card)
+    protected override void NotifyCardWasAdded(Card _card)
     {
-        mCardList.Add(_card);
-        _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.21f, transform.position.z);
-        mNextCardPoz += 1.5f;
-        _card.transform.eulerAngles = new Vector3(transform.eulerAngles.x, _card.transform.eulerAngles.y == 0 ? 180 : 0, transform.eulerAngles.z);//_card.transform.eulerAngles.y == 0 ? 180 : 0
-        _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
         _card.SetUntappedEulerAngleY(_card.transform.eulerAngles.y);
     }
+    /* public void AddCardToManager(Card _card)
+      {     
+          mCardList.Add(_card);
+          _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.21f, transform.position.z);
+          mNextCardPoz += 1.5f;
+          _card.transform.eulerAngles = new Vector3(transform.eulerAngles.x, _card.transform.eulerAngles.y == 0 ? 180 : 0, transform.eulerAngles.z);//_card.transform.eulerAngles.y == 0 ? 180 : 0
+          _card.transform.localScale = new Vector3(0.1f, 0.1f, 0.15f);
+          _card.SetUntappedEulerAngleY(_card.transform.eulerAngles.y);
+      } */
 
     public bool CanSummon(Card _card)
     {

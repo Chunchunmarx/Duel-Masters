@@ -316,7 +316,7 @@ namespace VolumetricLines
 
 		void OnDestroy()
 		{
-			DestroyMaterial();
+			//DestroyMaterial();
 		}
 		
 		void Update()
