@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattlezoneManager : MonoBehaviour
+public class BattlezoneManager : GameZoneManager
 {
-    public List<Card> mCardList;
+  
     public List<Transform> mInitCardList;
-    private float mNextCardPoz = -2;
     private PLAYER_ID mPlayerOwner = PLAYER_ID.INVALID;
     private List<Card> mBlockerList;
 
@@ -14,8 +13,22 @@ public class BattlezoneManager : MonoBehaviour
     {
         mBlockerList = new List<Card>();
     }
+    protected override void NotifyCardWasAdded(Card _card)
+    {
+        BattleState battleState = new BattleState(_card);
+        battleState.SetBattlezoneManager(this);
 
-    public void AddCard(Card _card)
+        _card.SetCardState(battleState);
+
+        if (_card.HasTraits(TRAITS.BLOCKER) == true)
+        {
+            mBlockerList.Add(_card);
+        }
+
+        battleState.WhenSummoned();
+    }
+
+   /*public void AddCardToManager(Card _card)
     {
         mCardList.Add(_card);
         _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z + 0.1f);
@@ -34,7 +47,7 @@ public class BattlezoneManager : MonoBehaviour
         }
 
         battleState.WhenSummoned();
-    }
+    }*/
 
     public void RemoveCard(Card _card)
     {

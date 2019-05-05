@@ -147,14 +147,14 @@ public class Card : MonoBehaviour
 
         if (mHasEnteredBattlezone == true && GameManager.instance.CanSummon(GetComponent<Card>()) == true)
         {
-            mBattlezoneManager.AddCard(this);
+            mBattlezoneManager.AddCardToManager(this);
             return;
         }
 
         if (mHasEnteredManazone == true && GameManager.instance.CanPlayMana(GetComponent<Card>()) == true)
         {
             SetCardState(new ManaState(GetComponent<Card>()));
-            GameManager.instance.GetActiveManazone().AddCard(this);
+            GameManager.instance.GetActiveManazone().AddCardToManager(this);
             return;
         }
 
@@ -177,6 +177,11 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void OnDestroy()
+    {
+        Debug.Log("I am ded");
+    }
+
     public void Defeated()
     {
         if (mAbilityData.mAbilityMoment == ABILITY_MOMENT.DEATHRATTLE)
@@ -185,6 +190,7 @@ public class Card : MonoBehaviour
         }
         else
         {
+            Debug.Log("Defeated");
             mCardState.ToGraveyard();
         }
     }

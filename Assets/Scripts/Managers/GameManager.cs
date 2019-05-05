@@ -378,8 +378,8 @@ public class GameManager : MonoBehaviour
         if(_data.Targets == TARGETS.ALL)
         {
             List<Card> returnList;
-            List<Card> list_1;
-            List<Card> list_2;
+            List<Card> list_1 = new List<Card>();
+            List<Card> list_2 = new List<Card>();
             list_1 = mBattlezone_One.GetConditionalList(_data);
             list_2 = mBattlezone_Two.GetConditionalList(_data);
             list_1.AddRange(list_2);

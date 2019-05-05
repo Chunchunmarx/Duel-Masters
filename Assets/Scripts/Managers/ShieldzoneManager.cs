@@ -6,7 +6,7 @@ public class ShieldzoneManager : MonoBehaviour {
     private List<Card> mCardList;
     private Transform mCardPrefab;
     private Deck mDeck;
-    private float mNextCardPoz = -3;
+    //private float mNextCardPoz = -3;
    
     void Awake()
     {
@@ -15,9 +15,7 @@ public class ShieldzoneManager : MonoBehaviour {
      
    void  Start()
     {
-        InstantiateShield(5);
-       
-       
+        InstantiateShield(5);   
 
     }
    
@@ -47,8 +45,8 @@ public class ShieldzoneManager : MonoBehaviour {
     {
         
         mCardList.Add(_card);
-        _card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z);
-        mNextCardPoz += 2;
+        //_card.transform.position = new Vector3(transform.position.x + mNextCardPoz, transform.position.y + 0.1f, transform.position.z);
+        //mNextCardPoz += 2;
         
     }
   
