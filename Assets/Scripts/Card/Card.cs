@@ -189,6 +189,11 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void DestroyCard()
+    {
+        Destroy(gameObject);
+    }
+
     public void ToHand()
     {
         mCardState.ToHand();

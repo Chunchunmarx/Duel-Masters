@@ -43,6 +43,7 @@ public class ConditionHolder : MonoBehaviour
         }
         // return true;
     }
+
     public void CheckPower(Card _card, ConditionData _data)
     {
         if (_card.GetPower() <= _data.Number)
