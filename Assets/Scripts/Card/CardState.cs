@@ -57,9 +57,8 @@ public class CardState
 
     public void ToGraveyard()
     {
-        //mCardReference.transform.position = new Vector3(100, 100, 100);
         LeaveState();
-        Object.DestroyImmediate(mCardReference);
+		mCardReference.DestroyCard
     }
 
     public void ToHand()
