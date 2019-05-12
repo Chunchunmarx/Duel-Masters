@@ -1,3 +1,22 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@TovarasulTony 
+2,774
+83,628 40,670 github/gitignore
+ Code  Pull requests 71  Projects 0  Insights
+gitignore/Unity.gitignore
+@AdmiralSnyder AdmiralSnyder Added Preamble (#2954)
+7c462a3 8 hours ago
+@mviranyi @theDrake @Tandoori @shana @qCring @LucasSteer @Frozenfire92 @ahmyi @FutureClemens @shiftkey @ahmedbaracat @matzar @rogersachan @tim-hub @taeminhong @rpistorello @1nfinite9 @owenblacker @mariuz @LotteMakesStuff @ksmit799 @jstasiak @kilian442 @jrreed @johnsoncodehk @jephir
+64 lines (51 sloc)  1011 Bytes
+    
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
@@ -60,3 +79,16 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+© 2019 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
