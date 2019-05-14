@@ -58,7 +58,7 @@ public class CardState
     public void ToGraveyard()
     {
         LeaveState();
-		mCardReference.DestroyCard
+		mCardReference.DestroyCard();
     }
 
     public void ToHand()
